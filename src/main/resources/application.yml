@@ -1,9 +1,6 @@
-liquibase:
-  enabled: true
-  liquibase-schema: PUBLIC
 spring:
   datasource:
-    url: jdbc:h2:mem:junit;MODE=PostgreSQL;DATABASE_TO_LOWER=true;DATABASE_TO_UPPER=false;CASE_INSENSITIVE_IDENTIFIERS=true
-    driverClassName: org.h2.Driver
-    username: sa
-    password: password
+    url: jdbc:postgresql://localhost:5432/DigitalLibrary?currentSchema=digital_library
+    driverClassName: org.postgresql.Driver
+    username: digital_library_user
+    password: digital_library_user

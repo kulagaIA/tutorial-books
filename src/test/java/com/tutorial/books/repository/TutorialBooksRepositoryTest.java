@@ -7,8 +7,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class TutorialBooksRepositoryTest {
 
     @Autowired
-    JdbcTemplate jdbcTemplate;
-
-    
+    protected JdbcTemplate jdbcTemplate;
 
 }
