@@ -15,7 +15,13 @@ public class UserJdbcRepositoryTest extends TutorialBooksRepositoryTest {
 
     @Test
     void testGetAll() {
-        System.out.println(jdbcTemplate.queryForList("select * from users"));
+        var user1 = createUser();
+        var user2 = createUser();
+        var user3 = createUser();
+
+        var result = repository.getAll();
+
+        assertThat
     }
 
 }
