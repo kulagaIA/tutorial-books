@@ -4,10 +4,10 @@ import com.tutorial.books.entity.User;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import javax.sql.DataSource;
-import java.util.HashMap;
 import java.util.Random;
 
 import static com.tutorial.books.util.Constants.COLUMN_NAME_USERS_ID;
@@ -40,9 +40,8 @@ public class TutorialBooksRepositoryTest {
         var simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
                 .withTableName(TABLE_NAME_USERS).usingGeneratedKeyColumns(COLUMN_NAME_USERS_ID);
 
-        var parameters = new HashMap<String, Object>();
-        parameters.put("user", user);
+        BeanPropertySqlParameterSource paramSource = new BeanPropertySqlParameterSource(user);
 
-        return (int) simpleJdbcInsert.executeAndReturnKey(parameters);
+        return (int) simpleJdbcInsert.executeAndReturnKey(paramSource);
     }
 }
