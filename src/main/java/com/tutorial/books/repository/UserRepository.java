@@ -9,6 +9,6 @@ public interface UserRepository {
 
     public List<User> getAll();
 
-    public Optional<User> getById();
+    public Optional<User> getById(Integer id);
 
 }

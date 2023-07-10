@@ -12,12 +12,8 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private UserRepository userRepository;
-
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private UserRepository userRepository;
 
     @Override
     public List<User> getAll() {
@@ -25,7 +21,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> getById() {
-        return Optional.empty();
+    public Optional<User> getById(Integer id) {
+        return userRepository.getById(id);
     }
 }

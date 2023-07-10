@@ -18,13 +18,15 @@ public class UserJdbcRepositoryImpl implements UserRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    private BeanPropertyRowMapper<User> mapper = new BeanPropertyRowMapper<>(User.class);
+
     @Override
     public List<User> getAll() {
-        return jdbcTemplate.query("select * from " + TABLE_NAME_USERS, new BeanPropertyRowMapper<>(User.class));
+        return jdbcTemplate.query("select * from " + TABLE_NAME_USERS, mapper);
     }
 
     @Override
-    public Optional<User> getById() {
-        return Optional.empty();
+    public Optional<User> getById(Integer id) {
+        return Optional.ofNullable(jdbcTemplate.queryForObject("select * from users where id = ?", mapper, id));
     }
 }

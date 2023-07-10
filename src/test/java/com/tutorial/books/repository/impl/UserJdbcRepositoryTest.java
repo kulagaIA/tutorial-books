@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @ActiveProfiles("junit")
@@ -35,4 +36,15 @@ public class UserJdbcRepositoryTest extends TutorialBooksRepositoryTest {
         assertThat(result).contains(user3);
     }
 
+    @Test
+    void testGetById() {
+        createUser();
+        createUser();
+        var user = createUser();
+
+        var result = repository.getById(user.getId());
+
+        assertTrue(result.isPresent());
+        assertThat(result.get()).isEqualTo(user);
+    }
 }
