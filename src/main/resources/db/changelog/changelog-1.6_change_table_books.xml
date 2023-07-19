@@ -7,13 +7,12 @@
       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd
       http://www.liquibase.org/xml/ns/pro
       http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd">
-    <changeSet  author="ikulaga"  id="changelog-1.0_create_table_users">
-        <createTable tableName="users">
-            <column  name="id"  type="INTEGER" autoIncrement="true">
-                <constraints  nullable="false"  primaryKey="true"  unique="true"/>
-            </column>
-            <column  name="name"  type="VARCHAR(255)" />
-            <column name="birth_year" type="INTEGER" />
-        </createTable>
+    <changeSet author="ikulaga" id="changelog-1.6_change_table_books">
+        <addColumn tableName="books">
+            <column name="quantity_available"
+                    type="INTEGER"
+                    defaultValue="1"/>
+        </addColumn>
+        <dropColumn tableName="books" columnName="user_id"/>
     </changeSet>
 </databaseChangeLog>

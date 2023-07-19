@@ -7,19 +7,18 @@
       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd
       http://www.liquibase.org/xml/ns/pro
       http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd">
-    <changeSet author="ikulaga" id="changelog-1.1_create_table_books">
-        <createTable tableName="books">
-            <column name="id" type="INTEGER" autoIncrement="true">
-                <constraints nullable="false" primaryKey="true" unique="true"/>
-            </column>
-            <column name="name" type="VARCHAR(255)"/>
-            <column name="author" type="VARCHAR(255)"/>
-            <column name="year" type="INTEGER"/>
+    <changeSet author="ikulaga" id="changelog-1.4_create_table_users_books">
+        <createTable tableName="users_books">
             <column name="user_id" type="INTEGER"/>
+            <column name="book_id" type="INTEGER"/>
         </createTable>
-        <addForeignKeyConstraint baseTableName="books" baseColumnNames="user_id"
-                                 constraintName="books_user_id"
+        <addForeignKeyConstraint baseTableName="users_books" baseColumnNames="user_id"
+                                 constraintName="books_users_user_id"
                                  referencedTableName="users" referencedColumnNames="id"
+                                 onDelete="SET NULL"/>
+        <addForeignKeyConstraint baseTableName="users_books" baseColumnNames="book_id"
+                                 constraintName="books_users_book_id"
+                                 referencedTableName="books" referencedColumnNames="id"
                                  onDelete="SET NULL"/>
     </changeSet>
 </databaseChangeLog>

@@ -13,4 +13,7 @@
     <include file="changelog-1.1_create_table_books.xml" relativeToChangelogFile="true"/>
     <include file="changelog-1.2_fill_table_users.xml" relativeToChangelogFile="true"/>
     <include file="changelog-1.3_fill_table_books.xml" relativeToChangelogFile="true"/>
+    <include file="changelog-1.4_create_table_users_books.xml" relativeToChangelogFile="true"/>
+    <include file="changelog-1.5_fill_table_users_books.xml" relativeToChangelogFile="true"/>
+    <include file="changelog-1.6_change_table_books.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

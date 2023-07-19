@@ -1,7 +1,7 @@
 package com.tutorial.books.service.impl;
 
 import com.tutorial.books.entity.User;
-import com.tutorial.books.repository.UserRepository;
+import com.tutorial.books.repository.BookRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,13 +17,13 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @ActiveProfiles("junit")
-public class UserServiceImplTest {
+public class BookServiceImplTest {
 
     @Autowired
-    private UserServiceImpl userService;
+    private BookServiceImpl bookService;
 
     @MockBean
-    private UserRepository userRepositoryMock;
+    private BookRepository bookRepositoryMock;
 
     @Test
     void testGetAll() {
