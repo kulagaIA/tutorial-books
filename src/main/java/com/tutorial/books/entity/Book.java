@@ -17,5 +17,7 @@ public class Book {
 
     private String author;
 
-    private Integer year;
+    private Integer publishYear;
+
+    private Integer quantityAvailable;
 }

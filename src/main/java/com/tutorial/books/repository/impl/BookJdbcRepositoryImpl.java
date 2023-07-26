@@ -38,8 +38,10 @@ public class BookJdbcRepositoryImpl implements BookRepository {
     public List<Book> getByUserId(Integer userId) {
         return jdbcTemplate.query(
                 "select * from " + TABLE_NAME_BOOKS +
-                        "where " + COLUMN_NAME_BOOKS_ID + " = (" +
-                        "select " + COLUMN_NAME_BOOKS_ID + " from "g)",
-                mapper);
+                        " left join " + TABLE_NAME_USERS_BOOKS +
+                        " on " + TABLE_NAME_BOOKS + "." + COLUMN_NAME_BOOKS_ID + "=" + TABLE_NAME_USERS_BOOKS + ".book_id" +
+                        " where " + TABLE_NAME_USERS_BOOKS + ".user_id = ?",
+                mapper,
+                userId);
     }
 }
