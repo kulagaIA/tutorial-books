@@ -16,12 +16,12 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> getAll() {
-        return null;
+        return bookRepository.getAll();
     }
 
     @Override
     public Book getById(Integer id) {
-        return null;
+        return bookRepository.getById(id).orElseThrow();
     }
 
     @Override
