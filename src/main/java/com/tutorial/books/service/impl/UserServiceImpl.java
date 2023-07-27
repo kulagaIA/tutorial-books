@@ -23,4 +23,9 @@ public class UserServiceImpl implements UserService {
     public User getById(Integer id) {
         return userRepository.getById(id).orElseThrow();
     }
+
+    @Override
+    public List<User> getByBookId(Integer bookId) {
+        return userRepository.getByBookId(bookId);
+    }
 }

@@ -61,4 +61,20 @@ public class UserServiceImplTest {
 
         assertThrows(NoSuchElementException.class, () -> userService.getById(id));
     }
+
+    @Test
+    void testGetByBookId() {
+        var id = 2;
+        var user1 = new User(1, "lol", 32767);
+        var user2 = new User(2, "lal", 1991);
+
+        when(userRepositoryMock.getByBookId(id)).thenReturn(List.of(user1, user2));
+
+        var result = userService.getByBookId(id);
+
+        verify(userRepositoryMock, times(1)).getByBookId(id);
+        assertNotNull(result);
+        assertEquals(result.get(0), user1);
+        assertEquals(result.get(1), user2);
+    }
 }

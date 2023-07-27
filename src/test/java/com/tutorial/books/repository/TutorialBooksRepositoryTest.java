@@ -30,7 +30,7 @@ public class TutorialBooksRepositoryTest {
     }
 
     protected void clearTables() {
-        deleteAllBooks();
+        deleteAllUsers();
         deleteAllBooks();
         deleteUsersBooks();
     }

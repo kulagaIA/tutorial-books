@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Users</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<p>user's books</p>
+<br>
+<p>user</p>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>NAME</th>
+        <th>BIRTH YEAR</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td><a th:text="${user.id}">id</a></td>
+        <td><a th:text="${user.name}">name</a></td>
+        <td><a th:text="${user.birthYear}">birthYear</a></td>
+    </tr>
+    </tbody>
+</table>
+<br>
+<p>books that user lent:</p>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>NAME</th>
+        <th>AUTHOR</th>
+        <th>PUBLISH YEAR</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${userBooks}">
+        <td><a th:text="${book.id}">id</a></td>
+        <td><a th:text="${book.name}">name</a></td>
+        <td><a th:text="${book.author}">author name</a></td>
+        <td><a th:text="${book.publishYear}">publish year</a></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

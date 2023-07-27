@@ -10,4 +10,5 @@ public interface UserService {
 
     public User getById(Integer id);
 
+    public List<User> getByBookId(Integer bookId);
 }

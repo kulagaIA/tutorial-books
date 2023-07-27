@@ -8,5 +8,25 @@
 </head>
 <body>
 <p>books</p>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>NAME</th>
+        <th>AUTHOR</th>
+        <th>PUBLISH YEAR</th>
+        <th>AVAILABLE QUANTITY</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${books}">
+        <td><a th:text="${book.id}" href="/books/0" th:href="@{/books/{id}(id=${book.id})}">id</a></td>
+        <td><a th:text="${book.name}" href="/books/0" th:href="@{/books/{id}(id=${book.id})}">name</a></td>
+        <td><a th:text="${book.author}" href="/books/0" th:href="@{/books/{id}(id=${book.id})}">author</a></td>
+        <td><a th:text="${book.publishYear}" href="/books/0" th:href="@{/books/{id}(id=${book.id})}">publish year</a></td>
+        <td><a th:text="${book.quantityAvailable}" href="/books/0" th:href="@{/books/{id}(id=${book.id})}">available quantity</a></td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>

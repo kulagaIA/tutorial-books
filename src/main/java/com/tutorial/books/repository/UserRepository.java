@@ -11,4 +11,5 @@ public interface UserRepository {
 
     public Optional<User> getById(Integer id);
 
+    List<User> getByBookId(Integer bookId);
 }

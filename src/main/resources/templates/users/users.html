@@ -17,19 +17,12 @@
     </tr>
     </thead>
     <tbody>
-        <tr th:each="user : ${users}">
-            <td><a th:text="${user.id}" href="/users/0" th:href="@{/{id}(id=${user.id})}">id</a></td>
-            <td><a th:text="${user.name}" href="/users/0" th:href="@{/{id}(id=${user.id})}">name</a></td>
-            <td><a th:text="${user.birthYear}" href="/users/0" th:href="@{/{id}(id=${user.id})}">birthYear</a></td>
+    <tr th:each="user : ${users}">
+        <td><a th:text="${user.id}" href="/users/0" th:href="@{/users/{id}(id=${user.id})}">id</a></td>
+        <td><a th:text="${user.name}" href="/users/0" th:href="@{/users/{id}(id=${user.id})}">name</a></td>
+        <td><a th:text="${user.birthYear}" href="/users/0" th:href="@{/users/{id}(id=${user.id})}">birthYear</a></td>
     </tr>
     </tbody>
 </table>
-
 </body>
-
-<script>
-    function rowClicked(id) {
-        location.href = "/user/" + id;
-    }
-</script>
 </html>
