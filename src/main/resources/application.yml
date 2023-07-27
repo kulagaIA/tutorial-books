@@ -4,3 +4,6 @@ spring:
     driverClassName: org.postgresql.Driver
     username: digital_library_user
     password: digital_library_user
+  liquibase:
+    enabled: true
+    changeLog: classpath:db/changelog/changelog.xml
