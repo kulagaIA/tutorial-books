@@ -3,21 +3,27 @@ package com.tutorial.books.repository.impl;
 import com.tutorial.books.entity.User;
 import com.tutorial.books.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
 
 import static com.tutorial.books.util.Constants.*;
-import static com.tutorial.books.util.Constants.TABLE_NAME_USERS_BOOKS;
 
 @Repository
 public class UserJdbcRepositoryImpl implements UserRepository {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private DataSource dataSource;
 
     private BeanPropertyRowMapper<User> mapper = new BeanPropertyRowMapper<>(User.class);
 
@@ -28,7 +34,13 @@ public class UserJdbcRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<User> getById(Integer id) {
-        return Optional.ofNullable(jdbcTemplate.queryForObject("select * from users where id = ?", mapper, id));
+        User user;
+        try {
+            user = jdbcTemplate.queryForObject("select * from users where id = ?", mapper, id);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
+        return Optional.of(user);
     }
 
     @Override
@@ -41,4 +53,30 @@ public class UserJdbcRepositoryImpl implements UserRepository {
                 mapper,
                 bookId);
     }
+
+    @Override
+    public User create(User user) {
+        var simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
+                .withTableName(TABLE_NAME_USERS).usingGeneratedKeyColumns(COLUMN_NAME_USERS_ID);
+
+        BeanPropertySqlParameterSource paramSource = new BeanPropertySqlParameterSource(user);
+
+        user.setId((int) simpleJdbcInsert.executeAndReturnKey(paramSource));
+
+        return user;
+    }
+
+    @Override
+    public void delete(Integer id) {
+        jdbcTemplate.update("delete from " + TABLE_NAME_USERS + " where id = ?", id);
+    }
+
+    @Override
+    public void update(User user) {
+        jdbcTemplate.update("update " + TABLE_NAME_USERS + " set name = ?, birth_year = ? where id = ?",
+                user.getName(),
+                user.getBirthYear(),
+                user.getId() );
+    }
+
 }

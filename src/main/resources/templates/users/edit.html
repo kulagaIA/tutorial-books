@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Users</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<p>EDIT USER INFO</p>
+<form action="/users/update" th:action="@{'/users/update'}" th:object="${user}" method="post">
+    <label for="name">Name:</label><br>
+    <input type="text" id="name" th:field="*{name}"><br>
+    <label for="year">Birth year:</label><br>
+    <input type="number" id="year" th:field="*{birthYear}"><br><br>
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>

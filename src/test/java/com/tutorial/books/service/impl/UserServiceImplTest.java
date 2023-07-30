@@ -2,6 +2,7 @@ package com.tutorial.books.service.impl;
 
 import com.tutorial.books.entity.User;
 import com.tutorial.books.repository.UserRepository;
+import com.tutorial.books.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,6 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -20,7 +22,7 @@ import static org.mockito.Mockito.*;
 public class UserServiceImplTest {
 
     @Autowired
-    private UserServiceImpl userService;
+    private UserService userService;
 
     @MockBean
     private UserRepository userRepositoryMock;
@@ -76,5 +78,32 @@ public class UserServiceImplTest {
         assertNotNull(result);
         assertEquals(result.get(0), user1);
         assertEquals(result.get(1), user2);
+    }
+
+    @Test
+    void testCreate() {
+        var user = User.builder().name("aboba").birthYear(32767).build();
+
+        when(userRepositoryMock.create(user)).thenReturn(user);
+        user.setId(new Random().nextInt());
+
+        var result = userService.create(user);
+
+        assertEquals(user, result);
+    }
+
+    @Test
+    void testDelete() {
+        userService.delete(1);
+
+        verify(userRepositoryMock, times(1)).delete(1);
+    }
+
+    @Test
+    void testUpdate() {
+        var user = new User();
+        userService.update(user);
+
+        verify(userRepositoryMock, times(1)).update(user);
     }
 }

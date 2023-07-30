@@ -1,5 +1,6 @@
 package com.tutorial.books.repository.impl;
 
+import com.tutorial.books.entity.User;
 import com.tutorial.books.repository.TutorialBooksRepositoryTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -89,5 +90,39 @@ public class UserJdbcRepositoryTest extends TutorialBooksRepositoryTest {
 
         assertThat(result.size()).isEqualTo(1);
         assertThat(result).contains(user1);
+    }
+
+    @Test
+    void testCreate() {
+        var user = User.builder().name("aboba").birthYear(32767).build();
+
+        var result = repository.getById(repository.create(user).getId());
+
+        assertThat(result.isPresent()).isTrue();
+        assertThat(result.get()).isEqualTo(user);
+    }
+
+    @Test
+    void testDelete() {
+        var user = createUser();
+
+        repository.delete(user.getId());
+
+        var result = repository.getById(user.getId());
+
+        assertThat(result.isEmpty()).isTrue();
+    }
+
+    @Test
+    void testUpdate() {
+        var user = createUser();
+        user.setName("aboba");
+        user.setBirthYear(11);
+        repository.update(user);
+
+        var result = repository.getById(user.getId());
+
+        assertThat(result.isPresent()).isTrue();
+        assertThat(result.get()).isEqualTo(user);
     }
 }

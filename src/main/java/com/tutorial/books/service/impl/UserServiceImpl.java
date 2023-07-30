@@ -28,4 +28,19 @@ public class UserServiceImpl implements UserService {
     public List<User> getByBookId(Integer bookId) {
         return userRepository.getByBookId(bookId);
     }
+
+    @Override
+    public User create(User user) {
+        return userRepository.create(user);
+    }
+
+    @Override
+    public void delete(Integer id) {
+        userRepository.delete(id);
+    }
+
+    @Override
+    public void update(User user) {
+        userRepository.update(user);
+    }
 }

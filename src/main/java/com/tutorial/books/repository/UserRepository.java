@@ -7,9 +7,15 @@ import java.util.Optional;
 
 public interface UserRepository {
 
-    public List<User> getAll();
+    List<User> getAll();
 
-    public Optional<User> getById(Integer id);
+    Optional<User> getById(Integer id);
 
     List<User> getByBookId(Integer bookId);
+
+    User create(User user);
+
+    void delete(Integer id);
+
+    void update(User user);
 }
