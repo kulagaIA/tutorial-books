@@ -28,4 +28,19 @@ public class BookServiceImpl implements BookService {
     public List<Book> getByUserId(Integer userId) {
         return bookRepository.getByUserId(userId);
     }
+
+    @Override
+    public Book create(Book book) {
+        return bookRepository.create(book);
+    }
+
+    @Override
+    public void delete(Integer id) {
+        bookRepository.delete(id);
+    }
+
+    @Override
+    public void update(Book book) {
+        bookRepository.update(book);
+    }
 }

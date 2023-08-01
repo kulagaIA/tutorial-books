@@ -11,6 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -76,5 +77,37 @@ public class BookServiceImplTest {
         assertNotNull(result);
         assertEquals(result.get(0), book1);
         assertEquals(result.get(1), book2);
+    }
+
+    @Test
+    void testCreate() {
+        var book = Book.builder()
+                .name("aboba")
+                .publishYear(32767)
+                .author("sus")
+                .quantityAvailable(1)
+                .build();
+
+        when(bookRepositoryMock.create(book)).thenReturn(book);
+        book.setId(new Random().nextInt());
+
+        var result = bookService.create(book);
+
+        assertEquals(book, result);
+    }
+
+    @Test
+    void testDelete() {
+        bookService.delete(1);
+
+        verify(bookRepositoryMock, times(1)).delete(1);
+    }
+
+    @Test
+    void testUpdate() {
+        var book = new Book();
+        bookService.update(book);
+
+        verify(bookRepositoryMock, times(1)).update(book);
     }
 }

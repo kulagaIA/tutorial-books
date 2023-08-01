@@ -3,10 +3,14 @@ package com.tutorial.books.repository.impl;
 import com.tutorial.books.entity.Book;
 import com.tutorial.books.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +22,9 @@ public class BookJdbcRepositoryImpl implements BookRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private DataSource dataSource;
+
     private BeanPropertyRowMapper<Book> mapper = new BeanPropertyRowMapper<>(Book.class);
 
     @Override
@@ -27,11 +34,17 @@ public class BookJdbcRepositoryImpl implements BookRepository {
 
     @Override
     public Optional<Book> getById(Integer id) {
-        return Optional.ofNullable(jdbcTemplate.queryForObject(
-                "select * from books " +
-                        "where " + COLUMN_NAME_USERS_ID + " = ?",
-                mapper,
-                id));
+        Book book;
+        try {
+            book = jdbcTemplate.queryForObject(
+                    "select * from books " +
+                            "where " + COLUMN_NAME_BOOKS_ID + " = ?",
+                    mapper,
+                    id);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
+        return Optional.of(book);
     }
 
     @Override
@@ -43,5 +56,37 @@ public class BookJdbcRepositoryImpl implements BookRepository {
                         " where " + TABLE_NAME_USERS_BOOKS + ".user_id = ?",
                 mapper,
                 userId);
+    }
+
+    @Override
+    public Book create(Book book) {
+        var simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
+                .withTableName(TABLE_NAME_BOOKS).usingGeneratedKeyColumns(COLUMN_NAME_BOOKS_ID);
+
+        BeanPropertySqlParameterSource paramSource = new BeanPropertySqlParameterSource(book);
+
+        book.setId((int) simpleJdbcInsert.executeAndReturnKey(paramSource));
+
+        return book;
+    }
+
+    @Override
+    public void delete(Integer id) {
+        jdbcTemplate.update("delete from " + TABLE_NAME_BOOKS + " where id = ?", id);
+    }
+
+    @Override
+    public void update(Book book) {
+        jdbcTemplate.update("update " + TABLE_NAME_BOOKS + " " +
+                        "set name = ?, " +
+                        "publish_year = ?, " +
+                        "author = ?, " +
+                        "quantity_available = ? " +
+                        "where id = ?",
+                book.getName(),
+                book.getPublishYear(),
+                book.getAuthor(),
+                book.getQuantityAvailable(),
+                book.getId());
     }
 }

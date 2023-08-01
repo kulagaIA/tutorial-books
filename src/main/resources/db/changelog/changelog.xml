@@ -18,4 +18,5 @@
     <include file="changelog-1.6_change_table_books.xml" relativeToChangelogFile="true"/>
     <include file="changelog-1.7_change_table_books.xml" relativeToChangelogFile="true"/>
     <include file="changelog-1.8_add_users.xml" relativeToChangelogFile="true"/>
+    <include file="changelog-1.9_refill_table_books.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

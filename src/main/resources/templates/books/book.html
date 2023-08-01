@@ -48,6 +48,14 @@
     </tr>
     </tbody>
 </table>
+<br>
+<button type="button">
+    <a th:href="@{'/books/' + ${book.id} + '/edit'}">edit book</a>
+</button>
+<br>
+<button type="button">
+    <a th:href="@{'/books/' + ${book.id} + '/delete'}">delete book</a>
+</button>
 
 </body>
 </html>

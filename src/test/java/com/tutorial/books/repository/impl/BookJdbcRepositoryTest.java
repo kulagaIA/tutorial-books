@@ -1,5 +1,6 @@
 package com.tutorial.books.repository.impl;
 
+import com.tutorial.books.entity.Book;
 import com.tutorial.books.repository.BookRepository;
 import com.tutorial.books.repository.TutorialBooksRepositoryTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -66,5 +67,44 @@ public class BookJdbcRepositoryTest extends TutorialBooksRepositoryTest {
         assertThat(result.size()).isEqualTo(2);
         assertThat(result).contains(book1);
         assertThat(result).contains(book2);
+    }
+
+    @Test
+    void testCreate() {
+        var book = Book.builder()
+                .name("aboba")
+                .publishYear(32767)
+                .author("sus")
+                .quantityAvailable(1)
+                .build();
+
+        var result = repository.getById(repository.create(book).getId());
+
+        assertThat(result.isPresent()).isTrue();
+        assertThat(result.get()).isEqualTo(book);
+    }
+
+    @Test
+    void testDelete() {
+        var book = createBook();
+
+        repository.delete(book.getId());
+
+        var result = repository.getById(book.getId());
+
+        assertThat(result.isEmpty()).isTrue();
+    }
+
+    @Test
+    void testUpdate() {
+        var book = createBook();
+        book.setName("aboba");
+        book.setPublishYear(11);
+        repository.update(book);
+
+        var result = repository.getById(book.getId());
+
+        assertThat(result.isPresent()).isTrue();
+        assertThat(result.get()).isEqualTo(book);
     }
 }

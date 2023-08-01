@@ -12,4 +12,10 @@ public interface BookRepository {
     public Optional<Book> getById(Integer id);
 
     public List<Book> getByUserId(Integer userId);
+
+    Book create(Book book);
+
+    void delete(Integer id);
+
+    void update(Book book);
 }
