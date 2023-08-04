@@ -79,4 +79,16 @@ public class UserJdbcRepositoryImpl implements UserRepository {
                 user.getId() );
     }
 
+    @Override
+    public List<User> getWithoutBookByBookId(Integer bookId) {
+        return jdbcTemplate.query(
+                "select distinct users.* " +
+                        "from users " +
+                        "where users.id not in (select users_books.user_id " +
+                        "                       from users_books " +
+                        "                       where users_books.book_id = ?)",
+                mapper,
+                bookId);
+    }
+
 }

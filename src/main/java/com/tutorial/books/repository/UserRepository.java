@@ -18,4 +18,6 @@ public interface UserRepository {
     void delete(Integer id);
 
     void update(User user);
+
+    List<User> getWithoutBookByBookId(Integer bookId);
 }

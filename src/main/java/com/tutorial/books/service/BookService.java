@@ -17,4 +17,6 @@ public interface BookService {
     void delete(Integer id);
 
     void update(Book book);
+
+    void giveToUser(Integer bookId, Integer userId);
 }

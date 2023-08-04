@@ -1,6 +1,7 @@
 package com.tutorial.books.repository.impl;
 
 import com.tutorial.books.entity.User;
+import com.tutorial.books.repository.BookRepository;
 import com.tutorial.books.repository.TutorialBooksRepositoryTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,9 @@ public class UserJdbcRepositoryTest extends TutorialBooksRepositoryTest {
 
     @Autowired
     private UserJdbcRepositoryImpl repository;
+
+    @Autowired
+    private BookRepository bookRepository;
 
     @BeforeEach
     void clearUsers() {
@@ -124,5 +128,27 @@ public class UserJdbcRepositoryTest extends TutorialBooksRepositoryTest {
 
         assertThat(result.isPresent()).isTrue();
         assertThat(result.get()).isEqualTo(user);
+    }
+
+    @Test
+    void testGetWithoutBookByBookId() {
+        var user1 = createUser();
+        var user2 = createUser();
+        var user3 = createUser();
+
+        createBook();
+        var book1 = createBook();
+        var book2 = createBook();
+
+        giveBookToUser(book1, user1);
+        giveBookToUser(book2, user1);
+        giveBookToUser(book1, user2);
+        giveBookToUser(book1, user3);
+
+        var result = repository.getWithoutBookByBookId(book2.getId());
+
+        assertThat(result.size()).isEqualTo(2);
+        assertThat(result).contains(user2);
+        assertThat(result).contains(user3);
     }
 }

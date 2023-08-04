@@ -106,4 +106,21 @@ public class UserServiceImplTest {
 
         verify(userRepositoryMock, times(1)).update(user);
     }
+
+    @Test
+    void testGetWithoutBookByBookId() {
+        var id = 2;
+        var user1 = new User(1, "lol", 32767);
+        var user2 = new User(2, "lal", 1991);
+        var user3 = new User(2, "lil", 1985);
+
+        when(userRepositoryMock.getWithoutBookByBookId(id)).thenReturn(List.of(user1, user2));
+
+        var result = userService.getWithoutBookByBookId(id);
+
+        verify(userRepositoryMock, times(1)).getWithoutBookByBookId(id);
+        assertNotNull(result);
+        assertEquals(result.get(0), user1);
+        assertEquals(result.get(1), user2);
+    }
 }

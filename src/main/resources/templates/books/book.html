@@ -41,7 +41,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="user : ${users}">
+    <tr th:each="user : ${bookUsers}">
         <td><a th:text="${user.id}">id</a></td>
         <td><a th:text="${user.name}">name</a></td>
         <td><a th:text="${user.birthYear}">birthYear</a></td>
@@ -49,13 +49,25 @@
     </tbody>
 </table>
 <br>
+<p>GIVE BOOK TO USER:</p>
+<form th:action="@{/courier/notInTime}" method="post" th:object="${user}">
+    <select>
+        <option disabled>select user...</option>
+        <option th:each="user : ${usersWithoutBook}" th:value="${user.name}" th:text="${user.name}">aboba</option>
+    </select>
+    <input type="hidden"/>
+    <button type="submit">Give this book to user</button>
+</form>
+
+<br>
+<br>
 <button type="button">
     <a th:href="@{'/books/' + ${book.id} + '/edit'}">edit book</a>
 </button>
 <br>
+<br>
 <button type="button">
     <a th:href="@{'/books/' + ${book.id} + '/delete'}">delete book</a>
 </button>
-
 </body>
 </html>

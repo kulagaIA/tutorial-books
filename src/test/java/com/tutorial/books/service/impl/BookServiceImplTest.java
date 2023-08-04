@@ -110,4 +110,13 @@ public class BookServiceImplTest {
 
         verify(bookRepositoryMock, times(1)).update(book);
     }
+
+    @Test
+    void testGiveToUser() {
+        var bookId = 2;
+        var userId = 32767;
+        bookService.giveToUser(bookId, userId);
+
+        verify(bookRepositoryMock, times(1)).giveToUser(bookId, userId);
+    }
 }

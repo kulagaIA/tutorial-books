@@ -43,4 +43,9 @@ public class UserServiceImpl implements UserService {
     public void update(User user) {
         userRepository.update(user);
     }
+
+    @Override
+    public List<User> getWithoutBookByBookId(Integer bookId) {
+        return userRepository.getWithoutBookByBookId(bookId);
+    }
 }

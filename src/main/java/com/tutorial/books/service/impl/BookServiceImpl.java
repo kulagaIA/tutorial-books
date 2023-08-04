@@ -43,4 +43,9 @@ public class BookServiceImpl implements BookService {
     public void update(Book book) {
         bookRepository.update(book);
     }
+
+    @Override
+    public void giveToUser(Integer bookId, Integer userId) {
+        bookRepository.giveToUser(bookId, userId);
+    }
 }

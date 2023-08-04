@@ -15,10 +15,10 @@
         <addForeignKeyConstraint baseTableName="users_books" baseColumnNames="user_id"
                                  constraintName="books_users_user_id"
                                  referencedTableName="users" referencedColumnNames="id"
-                                 onDelete="SET NULL"/>
+                                 onDelete="CASCADE"/>
         <addForeignKeyConstraint baseTableName="users_books" baseColumnNames="book_id"
                                  constraintName="books_users_book_id"
                                  referencedTableName="books" referencedColumnNames="id"
-                                 onDelete="SET NULL"/>
+                                 onDelete="CASCADE"/>
     </changeSet>
 </databaseChangeLog>

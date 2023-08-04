@@ -2,6 +2,7 @@ package com.tutorial.books.controller;
 
 
 import com.tutorial.books.entity.Book;
+import com.tutorial.books.entity.User;
 import com.tutorial.books.service.BookService;
 import com.tutorial.books.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,8 @@ public class BookController {
     @GetMapping("/books/{id}")
     public String showBook(Model model, @PathVariable("id") Integer id) {
         model.addAttribute("book", bookService.getById(id));
-        model.addAttribute("users", userService.getByBookId(id));
+        model.addAttribute("bookUsers", userService.getByBookId(id));
+        model.addAttribute("usersWithoutBook", userService.getWithoutBookByBookId(id));
         return "books/book";
     }
 
@@ -65,4 +67,9 @@ public class BookController {
         return "redirect:/books";
     }
 
+    @PostMapping("/books/{id}/give")
+    public String updateBook(@ModelAttribute User user, @PathVariable("id") Integer id, Model model) {
+        bookService.giveToUser(id, user.getId());
+        return "redirect:/books/" + id;
+    }
 }

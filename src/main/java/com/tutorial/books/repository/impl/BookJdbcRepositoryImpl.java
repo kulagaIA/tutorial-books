@@ -89,4 +89,12 @@ public class BookJdbcRepositoryImpl implements BookRepository {
                 book.getQuantityAvailable(),
                 book.getId());
     }
+
+    @Override
+    public void giveToUser(Integer bookId, Integer userId) {
+        jdbcTemplate.update(
+                "insert into users_books values ?, ?",
+                userId,
+                bookId);
+    }
 }
