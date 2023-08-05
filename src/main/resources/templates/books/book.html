@@ -50,13 +50,13 @@
 </table>
 <br>
 <p>GIVE BOOK TO USER:</p>
-<form th:action="@{/courier/notInTime}" method="post" th:object="${user}">
-    <select>
-        <option disabled>select user...</option>
-        <option th:each="user : ${usersWithoutBook}" th:value="${user.name}" th:text="${user.name}">aboba</option>
+<form th:action="@{'/books/' + ${book.id} + '/assign'}" method="post" th:object="${user}">
+    <select th:field="*{id}">
+        <option disabled value="">select user...</option>
+        <option th:each="user : ${usersWithoutBook}" th:value="${user.id}" th:text="${user.name}">aboba</option>
     </select>
     <input type="hidden"/>
-    <button type="submit">Give this book to user</button>
+    <button type="submit">Give book to this user</button>
 </form>
 
 <br>

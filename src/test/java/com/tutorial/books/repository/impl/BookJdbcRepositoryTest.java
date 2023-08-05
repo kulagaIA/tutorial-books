@@ -3,6 +3,7 @@ package com.tutorial.books.repository.impl;
 import com.tutorial.books.entity.Book;
 import com.tutorial.books.repository.BookRepository;
 import com.tutorial.books.repository.TutorialBooksRepositoryTest;
+import com.tutorial.books.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class BookJdbcRepositoryTest extends TutorialBooksRepositoryTest {
 
     @Autowired
-    private BookRepository repository;
+    private BookRepository bookRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @BeforeEach
     void clearBooks() {
@@ -30,7 +34,7 @@ public class BookJdbcRepositoryTest extends TutorialBooksRepositoryTest {
         var book2 = createBook();
         var book3 = createBook();
 
-        var result = repository.getAll();
+        var result = bookRepository.getAll();
 
         assertThat(result.size()).isEqualTo(3);
         assertThat(result).contains(book1);
@@ -44,7 +48,7 @@ public class BookJdbcRepositoryTest extends TutorialBooksRepositoryTest {
         createBook();
         var book = createBook();
 
-        var result = repository.getById(book.getId());
+        var result = bookRepository.getById(book.getId());
 
         assertTrue(result.isPresent());
         assertThat(result.get()).isEqualTo(book);
@@ -62,7 +66,7 @@ public class BookJdbcRepositoryTest extends TutorialBooksRepositoryTest {
         giveBookToUser(book1, user);
         giveBookToUser(book2, user);
 
-        var result = repository.getByUserId(user.getId());
+        var result = bookRepository.getByUserId(user.getId());
 
         assertThat(result.size()).isEqualTo(2);
         assertThat(result).contains(book1);
@@ -78,7 +82,7 @@ public class BookJdbcRepositoryTest extends TutorialBooksRepositoryTest {
                 .quantityAvailable(1)
                 .build();
 
-        var result = repository.getById(repository.create(book).getId());
+        var result = bookRepository.getById(bookRepository.create(book).getId());
 
         assertThat(result.isPresent()).isTrue();
         assertThat(result.get()).isEqualTo(book);
@@ -88,9 +92,9 @@ public class BookJdbcRepositoryTest extends TutorialBooksRepositoryTest {
     void testDelete() {
         var book = createBook();
 
-        repository.delete(book.getId());
+        bookRepository.delete(book.getId());
 
-        var result = repository.getById(book.getId());
+        var result = bookRepository.getById(book.getId());
 
         assertThat(result.isEmpty()).isTrue();
     }
@@ -100,11 +104,36 @@ public class BookJdbcRepositoryTest extends TutorialBooksRepositoryTest {
         var book = createBook();
         book.setName("aboba");
         book.setPublishYear(11);
-        repository.update(book);
+        bookRepository.update(book);
 
-        var result = repository.getById(book.getId());
+        var result = bookRepository.getById(book.getId());
 
         assertThat(result.isPresent()).isTrue();
         assertThat(result.get()).isEqualTo(book);
+    }
+
+    @Test
+    void testGiveToUser() {
+        var user = createUser();
+        var book = createBook();
+
+        bookRepository.assignToUser(book.getId(), user.getId());
+
+        var usersWithBook = userRepository.getByBookId((book.getId()));
+
+        assertThat(usersWithBook.size()).isEqualTo(1);
+        assertThat(usersWithBook.get(0)).isEqualTo(user);
+    }
+
+    @Test
+    void testDecreaseQuantityAvailable() {
+        var book = createBook();
+
+        bookRepository.decreaseQuantityAvailable(book.getId());
+
+        var result = bookRepository.getById(book.getId());
+
+        assertThat(result.isPresent()).isTrue();
+        assertThat(result.get().getQuantityAvailable()).isEqualTo(book.getQuantityAvailable() - 1);
     }
 }

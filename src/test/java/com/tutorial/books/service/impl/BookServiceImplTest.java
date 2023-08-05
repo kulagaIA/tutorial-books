@@ -115,8 +115,9 @@ public class BookServiceImplTest {
     void testGiveToUser() {
         var bookId = 2;
         var userId = 32767;
-        bookService.giveToUser(bookId, userId);
+        bookService.assignToUser(bookId, userId);
 
-        verify(bookRepositoryMock, times(1)).giveToUser(bookId, userId);
+        verify(bookRepositoryMock, times(1)).assignToUser(bookId, userId);
+        verify(bookRepositoryMock, times(1)).decreaseQuantityAvailable(bookId);
     }
 }

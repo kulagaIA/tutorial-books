@@ -45,7 +45,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void giveToUser(Integer bookId, Integer userId) {
-        bookRepository.giveToUser(bookId, userId);
+    public void assignToUser(Integer bookId, Integer userId) {
+        bookRepository.assignToUser(bookId, userId);
+        bookRepository.decreaseQuantityAvailable(bookId);
     }
 }

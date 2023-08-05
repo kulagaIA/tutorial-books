@@ -91,10 +91,19 @@ public class BookJdbcRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public void giveToUser(Integer bookId, Integer userId) {
+    public void assignToUser(Integer bookId, Integer userId) {
         jdbcTemplate.update(
-                "insert into users_books values ?, ?",
+                "insert into users_books values (?, ?)",
                 userId,
+                bookId);
+    }
+
+    @Override
+    public void decreaseQuantityAvailable(Integer bookId) {
+        jdbcTemplate.update(
+                "update books " +
+                        "set quantity_available = quantity_available - 1 " +
+                        "where id = ?",
                 bookId);
     }
 }

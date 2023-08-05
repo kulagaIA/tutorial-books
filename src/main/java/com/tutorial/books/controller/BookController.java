@@ -33,6 +33,7 @@ public class BookController {
         model.addAttribute("book", bookService.getById(id));
         model.addAttribute("bookUsers", userService.getByBookId(id));
         model.addAttribute("usersWithoutBook", userService.getWithoutBookByBookId(id));
+        model.addAttribute("user", new User());
         return "books/book";
     }
 
@@ -67,9 +68,9 @@ public class BookController {
         return "redirect:/books";
     }
 
-    @PostMapping("/books/{id}/give")
-    public String updateBook(@ModelAttribute User user, @PathVariable("id") Integer id, Model model) {
-        bookService.giveToUser(id, user.getId());
-        return "redirect:/books/" + id;
+    @PostMapping("/books/{id}/assign")
+    public String updateBook(@ModelAttribute User user, @PathVariable("id") Integer bookId, Model model) {
+        bookService.assignToUser(bookId, user.getId());
+        return "redirect:/books/" + bookId;
     }
 }
