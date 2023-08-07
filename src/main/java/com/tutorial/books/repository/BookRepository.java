@@ -19,7 +19,11 @@ public interface BookRepository {
 
     void update(Book book);
 
-    void assignToUser(Integer bookId, Integer userId);
+    void bindToUser(Integer bookId, Integer userId);
 
     void decreaseQuantityAvailable(Integer bookId);
+
+    void unbindFromUser(Integer bookId, Integer userId);
+
+    void increaseQuantityAvailable(Integer id);
 }

@@ -8,6 +8,7 @@
 </head>
 <body>
 <p>ADD NEW USER</p>
+<span><a th:href="${'/users'}">back to users list</a></span>
 <form action="/users/create" th:action="@{/users/create}" th:object="${user}" method="post">
     <label for="name">Name:</label><br>
     <input type="text" id="name" name="name" th:field="*{name}" placeholder="John Brown"><br>

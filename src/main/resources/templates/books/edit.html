@@ -8,6 +8,7 @@
 </head>
 <body>
 <p>EDIT BOOK INFO</p>
+<span><a th:href="${'/books'}">back to books list</a></span>
 <form action="/books/1/update" th:action="@{/books/{id}/update(id=${book.id})}" th:object="${book}" method="post">
     <label for="name">Name:</label><br>
     <input type="text" id="name" th:field="*{name}"><br>

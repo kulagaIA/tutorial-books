@@ -62,15 +62,21 @@ public class BookController {
     }
 
     @PostMapping("/books/{id}/update")
-    public String updateBook(@ModelAttribute Book book,  @PathVariable("id") Integer id, Model model) {
+    public String returnFromUser(@ModelAttribute Book book, @PathVariable("id") Integer id, Model model) {
         book.setId(id);
         bookService.update(book);
         return "redirect:/books";
     }
 
-    @PostMapping("/books/{id}/assign")
-    public String updateBook(@ModelAttribute User user, @PathVariable("id") Integer bookId, Model model) {
-        bookService.assignToUser(bookId, user.getId());
+    @PostMapping("/books/{id}/give")
+    public String giveToUser(@ModelAttribute User user, @PathVariable("id") Integer bookId, Model model) {
+        bookService.giveToUser(bookId, user.getId());
+        return "redirect:/books/" + bookId;
+    }
+
+    @PostMapping("/books/{id}/return")
+    public String returnFromUser(@ModelAttribute User user, @PathVariable("id") Integer bookId, Model model) {
+        bookService.returnFromUser(bookId, user.getId());
         return "redirect:/books/" + bookId;
     }
 }

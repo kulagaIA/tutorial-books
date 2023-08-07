@@ -8,6 +8,7 @@
 </head>
 <body>
 <p>ADD NEW BOOK</p>
+<span><a th:href="${'/books'}">back to books list</a></span>
 <form action="/books/create" th:action="@{/books/create}" th:object="${book}" method="post">
     <label for="name">Name:</label><br>
     <input type="text" id="name" th:field="*{name}" placeholder="Amongus"><br>

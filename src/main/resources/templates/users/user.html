@@ -8,6 +8,7 @@
 </head>
 <body>
 <p>user's books</p>
+<span><a th:href="${'/users'}">back to users list</a></span>
 <br>
 <p>user</p>
 <table>
@@ -28,24 +29,29 @@
 </table>
 <br>
 <p>books that user lent:</p>
-<table>
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>NAME</th>
-        <th>AUTHOR</th>
-        <th>PUBLISH YEAR</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="book : ${userBooks}">
-        <td><a th:text="${book.id}">id</a></td>
-        <td><a th:text="${book.name}">name</a></td>
-        <td><a th:text="${book.author}">author name</a></td>
-        <td><a th:text="${book.publishYear}">publish year</a></td>
-    </tr>
-    </tbody>
-</table>
+<div th:if="${userBooks.size() == 0}">
+    <span>this user has no books</span>
+</div>
+<div th:if="${userBooks.size() > 0}">
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>NAME</th>
+            <th>AUTHOR</th>
+            <th>PUBLISH YEAR</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="book : ${userBooks}">
+            <td><a th:text="${book.id}">id</a></td>
+            <td><a th:text="${book.name}">name</a></td>
+            <td><a th:text="${book.author}">author name</a></td>
+            <td><a th:text="${book.publishYear}">publish year</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 <br>
 <button type="button">
     <a th:href="@{'/users/' + ${user.id} + '/edit'}">edit user</a>

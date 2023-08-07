@@ -115,9 +115,19 @@ public class BookServiceImplTest {
     void testGiveToUser() {
         var bookId = 2;
         var userId = 32767;
-        bookService.assignToUser(bookId, userId);
+        bookService.giveToUser(bookId, userId);
 
-        verify(bookRepositoryMock, times(1)).assignToUser(bookId, userId);
+        verify(bookRepositoryMock, times(1)).bindToUser(bookId, userId);
         verify(bookRepositoryMock, times(1)).decreaseQuantityAvailable(bookId);
+    }
+
+    @Test
+    void testReturnFromUser() {
+        var bookId = 2;
+        var userId = 32767;
+        bookService.returnFromUser(bookId, userId);
+
+        verify(bookRepositoryMock, times(1)).unbindFromUser(bookId, userId);
+        verify(bookRepositoryMock, times(1)).increaseQuantityAvailable(bookId);
     }
 }

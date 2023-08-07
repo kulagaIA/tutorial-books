@@ -113,11 +113,11 @@ public class BookJdbcRepositoryTest extends TutorialBooksRepositoryTest {
     }
 
     @Test
-    void testGiveToUser() {
+    void testBindToUser() {
         var user = createUser();
         var book = createBook();
 
-        bookRepository.assignToUser(book.getId(), user.getId());
+        bookRepository.bindToUser(book.getId(), user.getId());
 
         var usersWithBook = userRepository.getByBookId((book.getId()));
 
@@ -135,5 +135,30 @@ public class BookJdbcRepositoryTest extends TutorialBooksRepositoryTest {
 
         assertThat(result.isPresent()).isTrue();
         assertThat(result.get().getQuantityAvailable()).isEqualTo(book.getQuantityAvailable() - 1);
+    }
+
+    @Test
+    void testUnbindFromUser() {
+        var user = createUser();
+        var book = createBook();
+        giveBookToUser(book, user);
+
+        bookRepository.unbindFromUser(book.getId(), user.getId());
+
+        var usersWithBook = userRepository.getByBookId((book.getId()));
+
+        assertThat(usersWithBook.size()).isEqualTo(0);
+    }
+
+    @Test
+    void testIncreaseQuantityAvailable() {
+        var book = createBook();
+
+        bookRepository.increaseQuantityAvailable(book.getId());
+
+        var result = bookRepository.getById(book.getId());
+
+        assertThat(result.isPresent()).isTrue();
+        assertThat(result.get().getQuantityAvailable()).isEqualTo(book.getQuantityAvailable() + 1);
     }
 }

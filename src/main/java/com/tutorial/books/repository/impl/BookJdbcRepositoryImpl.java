@@ -91,7 +91,7 @@ public class BookJdbcRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public void assignToUser(Integer bookId, Integer userId) {
+    public void bindToUser(Integer bookId, Integer userId) {
         jdbcTemplate.update(
                 "insert into users_books values (?, ?)",
                 userId,
@@ -103,6 +103,20 @@ public class BookJdbcRepositoryImpl implements BookRepository {
         jdbcTemplate.update(
                 "update books " +
                         "set quantity_available = quantity_available - 1 " +
+                        "where id = ?",
+                bookId);
+    }
+
+    @Override
+    public void unbindFromUser(Integer bookId, Integer userId) {
+        jdbcTemplate.update("delete from users_books where user_id = ? and book_id = ?", userId, bookId);
+    }
+
+    @Override
+    public void increaseQuantityAvailable(Integer bookId) {
+        jdbcTemplate.update(
+                "update books " +
+                        "set quantity_available = quantity_available + 1 " +
                         "where id = ?",
                 bookId);
     }

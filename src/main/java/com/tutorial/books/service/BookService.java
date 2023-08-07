@@ -18,5 +18,7 @@ public interface BookService {
 
     void update(Book book);
 
-    void assignToUser(Integer bookId, Integer userId);
+    void giveToUser(Integer bookId, Integer userId);
+
+    void returnFromUser(Integer bookId, Integer userId);
 }

@@ -8,6 +8,7 @@
 </head>
 <body>
 <p>book info</p>
+<span><a th:href="${'/books'}">back to books list</a></span>
 <br>
 <p>book</p>
 <table>
@@ -32,33 +33,50 @@
 </table>
 <br>
 <p>users who have this book:</p>
-<table>
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>NAME</th>
-        <th>BIRTH YEAR</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="user : ${bookUsers}">
-        <td><a th:text="${user.id}">id</a></td>
-        <td><a th:text="${user.name}">name</a></td>
-        <td><a th:text="${user.birthYear}">birthYear</a></td>
-    </tr>
-    </tbody>
-</table>
+<div th:if="${bookUsers.size() == 0}">
+    <span>no user has this book</span>
+</div>
+<div th:if="${bookUsers.size() > 0}">
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>NAME</th>
+            <th>BIRTH YEAR</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr th:each="bookUser : ${bookUsers}">
+            <td><a th:text="${bookUser.id}">id</a></td>
+            <td><a th:text="${bookUser.name}">name</a></td>
+            <td><a th:text="${bookUser.birthYear}">birthYear</a></td>
+            <td>
+                <form th:action="@{'/books/' + ${book.id} + '/return'}" method="post" th:object="${user}">
+                    <input type="hidden" th:value="${bookUser.id}" th:name="id" th:id="id">
+                    <input type="submit" value="RETURN"/>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
 <br>
 <p>GIVE BOOK TO USER:</p>
-<form th:action="@{'/books/' + ${book.id} + '/assign'}" method="post" th:object="${user}">
-    <select th:field="*{id}">
-        <option disabled value="">select user...</option>
-        <option th:each="user : ${usersWithoutBook}" th:value="${user.id}" th:text="${user.name}">aboba</option>
-    </select>
-    <input type="hidden"/>
-    <button type="submit">Give book to this user</button>
-</form>
-
+<div th:if="${usersWithoutBook.size() == 0}">
+    <span>all users have this book</span>
+</div>
+<div th:if="${usersWithoutBook.size() > 0}">
+    <form th:action="@{'/books/' + ${book.id} + '/give'}" method="post" th:object="${user}">
+        <select th:field="*{id}">
+            <option disabled value="">select user...</option>
+            <option th:each="user : ${usersWithoutBook}" th:value="${user.id}" th:text="${user.name}">aboba</option>
+        </select>
+        <input type="hidden"/>
+        <button type="submit">Give book to this user</button>
+    </form>
+</div>
 <br>
 <br>
 <button type="button">
