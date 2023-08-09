@@ -36,7 +36,7 @@ public class UserControllerTest {
 
     @Test
     public void testShowUsers() throws Exception {
-        List<User> users = new ArrayList<>();
+        var users = new ArrayList<User>();
         users.add(new User(1, "John", 1995));
         users.add(new User(2, "Alice", 1994));
 
@@ -50,14 +50,14 @@ public class UserControllerTest {
 
     @Test
     public void testShowUser() throws Exception {
-        Integer userId = 1;
-        User user = new User(userId, "John", 1995);
-        Book book1 = new Book(2, "sus", "aa", 123, 1);
-        Book book2 = new Book(3, "aboba", "burgun", 1234, 5);
-        Mockito.when(userService.getById(1)).thenReturn(user);
+        var userId = 1;
+        var user = new User(userId, "John", 1995);
+        var book1 = new Book(2, "sus", "aa", 123, 1);
+        var book2 = new Book(3, "aboba", "burgun", 1234, 5);
+        Mockito.when(userService.getById(userId)).thenReturn(user);
         Mockito.when(bookService.getByUserId(userId)).thenReturn(List.of(book1, book2));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/users/1"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/users/" + userId))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.model().attribute("user", user))
                 .andExpect(MockMvcResultMatchers.model().attribute("userBooks", List.of(book1, book2)))
@@ -82,7 +82,7 @@ public class UserControllerTest {
 
         Mockito.verify(userService).create(userCaptor.capture());
 
-        User capturedUser = userCaptor.getValue();
+        var capturedUser = userCaptor.getValue();
         Assertions.assertEquals("Alice", capturedUser.getName());
         Assertions.assertEquals(1996, capturedUser.getBirthYear());
     }
@@ -93,16 +93,16 @@ public class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
                 .andExpect(MockMvcResultMatchers.view().name("redirect:/users"));
 
-        ArgumentCaptor<Integer> idCaptor = ArgumentCaptor.forClass(Integer.class);
+        var idCaptor = ArgumentCaptor.forClass(Integer.class);
         Mockito.verify(userService).delete(idCaptor.capture());
 
-        Integer capturedId = idCaptor.getValue();
+        var capturedId = idCaptor.getValue();
         Assertions.assertEquals(1, capturedId.intValue());
     }
 
     @Test
     public void testEditUser() throws Exception {
-        User user = new User(1, "John", 1995);
+        var user = new User(1, "John", 1995);
         Mockito.when(userService.getById(1)).thenReturn(user);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/users/1/edit"))
@@ -121,7 +121,7 @@ public class UserControllerTest {
 
         Mockito.verify(userService).update(userCaptor.capture());
 
-        User capturedUser = userCaptor.getValue();
+        var capturedUser = userCaptor.getValue();
         Assertions.assertEquals(1, capturedUser.getId());
         Assertions.assertEquals("Updated Name", capturedUser.getName());
         Assertions.assertEquals(1996, capturedUser.getBirthYear());
@@ -147,7 +147,6 @@ public class UserControllerTest {
                 //.andExpect(MockMvcResultMatchers.model().attributeHasFieldErrors("user", "name"))
                 //.andExpect(MockMvcResultMatchers.view().name("users/new"));
 
-        // Make sure to verify that the create method was not called
         Mockito.verify(userService, Mockito.never()).create(Mockito.any());
     }
 }

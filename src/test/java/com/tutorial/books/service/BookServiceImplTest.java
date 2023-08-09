@@ -1,7 +1,8 @@
-package com.tutorial.books.service.impl;
+package com.tutorial.books.service;
 
 import com.tutorial.books.entity.Book;
 import com.tutorial.books.repository.BookRepository;
+import com.tutorial.books.service.impl.BookServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

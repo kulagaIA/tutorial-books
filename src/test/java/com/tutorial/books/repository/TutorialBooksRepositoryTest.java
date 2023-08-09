@@ -41,7 +41,7 @@ public class TutorialBooksRepositoryTest {
 
     protected User createUser() {
         var user = User.builder()
-                .birthYear(new Random().nextInt())
+                .birthYear(new Random().nextInt(32767))
                 .name(RandomStringUtils.randomAlphabetic(10))
                 .build();
 
@@ -58,7 +58,7 @@ public class TutorialBooksRepositoryTest {
 
     protected Book createBook() {
         var book = Book.builder()
-                .publishYear(new Random().nextInt())
+                .publishYear(new Random().nextInt(32767))
                 .name(RandomStringUtils.randomAlphabetic(10))
                 .author(RandomStringUtils.randomAlphabetic(20))
                 .quantityAvailable(new Random().nextInt(5))

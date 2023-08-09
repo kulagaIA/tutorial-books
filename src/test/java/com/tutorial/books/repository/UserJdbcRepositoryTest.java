@@ -1,8 +1,7 @@
-package com.tutorial.books.repository.impl;
+package com.tutorial.books.repository;
 
 import com.tutorial.books.entity.User;
-import com.tutorial.books.repository.BookRepository;
-import com.tutorial.books.repository.TutorialBooksRepositoryTest;
+import com.tutorial.books.repository.impl.UserJdbcRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
