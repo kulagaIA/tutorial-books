@@ -1,10 +1,10 @@
 package com.tutorial.books.controller;
 
-
 import com.tutorial.books.entity.Book;
 import com.tutorial.books.entity.User;
 import com.tutorial.books.service.BookService;
 import com.tutorial.books.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,7 +44,7 @@ public class BookController {
     }
 
     @PostMapping("/books/create")
-    public String createBook(@ModelAttribute Book book, Model model) {
+    public String createBook(@ModelAttribute @Valid Book book, Model model) {
         bookService.create(book);
         return "redirect:/books";
     }
@@ -62,7 +62,7 @@ public class BookController {
     }
 
     @PostMapping("/books/{id}/update")
-    public String returnFromUser(@ModelAttribute Book book, @PathVariable("id") Integer id, Model model) {
+    public String updateBook(@ModelAttribute @Valid Book book, @PathVariable("id") Integer id, Model model) {
         book.setId(id);
         bookService.update(book);
         return "redirect:/books";

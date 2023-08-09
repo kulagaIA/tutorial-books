@@ -4,6 +4,7 @@ package com.tutorial.books.controller;
 import com.tutorial.books.entity.User;
 import com.tutorial.books.service.BookService;
 import com.tutorial.books.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,7 +39,7 @@ public class UserController {
     }
 
     @PostMapping("/users/create")
-    public String createUser(@ModelAttribute User user, Model model) {
+    public String createUser(@ModelAttribute @Valid User user, Model model) {
         userService.create(user);
         return "redirect:/users";
     }
@@ -56,7 +57,7 @@ public class UserController {
     }
 
     @PostMapping("/users/{id}/update")
-    public String updateUser(@ModelAttribute User user,  @PathVariable("id") Integer id, Model model) {
+    public String updateUser(@ModelAttribute @Valid User user,  @PathVariable("id") Integer id, Model model) {
         user.setId(id);
         userService.update(user);
         return "redirect:/users";

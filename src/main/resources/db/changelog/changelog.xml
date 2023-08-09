@@ -19,4 +19,8 @@
     <include file="changelog-1.7_change_table_books.xml" relativeToChangelogFile="true"/>
     <include file="changelog-1.8_add_users.xml" relativeToChangelogFile="true"/>
     <include file="changelog-1.9_refill_table_books.xml" relativeToChangelogFile="true"/>
+    <include file="changelog-1.10_add_constraints_for_table_users.xml" relativeToChangelogFile="true"/>
+    <include file="changelog-1.11_add_constraints_for_table_books.xml" relativeToChangelogFile="true"/>
+    <include file="changelog-1.12_add_constraints_for_table_books.sql" relativeToChangelogFile="true"/>
+    <include file="changelog-1.13_add_constraints_for_table_users_books.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
