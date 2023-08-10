@@ -2,7 +2,10 @@ package com.tutorial.books.entity;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
+
+import static com.tutorial.books.util.Constants.*;
 
 @Getter
 @Setter
@@ -15,14 +18,16 @@ public class Book {
 
     private Integer id;
 
-    @NotEmpty
+    @NotEmpty(message = BOOK_NAME_VALIDATION_ERROR)
     private String name;
 
     private String author;
 
-    @Min(0)
+    @Min(value = 0, message = BOOK_PUBLISH_YEAR_VALIDATION_ERROR)
+    @NotNull(message = BOOK_PUBLISH_YEAR_VALIDATION_ERROR)
     private Integer publishYear;
 
-    @Min(0)
+    @Min(value = 0, message = BOOK_QUANTITY_AVAILABLE_VALIDATION_ERROR)
+    @NotNull(message = BOOK_QUANTITY_AVAILABLE_VALIDATION_ERROR)
     private Integer quantityAvailable;
 }

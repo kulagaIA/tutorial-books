@@ -11,9 +11,13 @@
 <span><a th:href="${'/users'}">back to users list</a></span>
 <form action="/users/create" th:action="@{/users/create}" th:object="${user}" method="post">
     <label for="name">Name:</label><br>
-    <input type="text" id="name" name="name" th:field="*{name}" placeholder="John Brown"><br>
+    <input type="text" id="name" name="name" th:field="*{name}" placeholder="John Brown">
+    <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
+    <br>
     <label for="year">Birth year:</label><br>
-    <input type="number" id="year" name="year" th:field="*{birthYear}" placeholder="1991"><br><br>
+    <input type="number" id="year" name="year" th:field="*{birthYear}" placeholder="1991">
+    <div style="color:red" th:if="${#fields.hasErrors('birthYear')}" th:errors="*{birthYear}">Birth year Error</div>
+    <br><br>
     <input type="submit" value="Submit">
 </form>
 </body>

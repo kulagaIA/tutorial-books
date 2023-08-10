@@ -129,12 +129,16 @@ public class UserControllerTest {
 
     @Test
     public void testUpdateUserWithInvalidInput() throws Exception {
+        var invalidFieldName = "birthYear";
+        var invalidFieldValue = "-32767";
+
         mockMvc.perform(MockMvcRequestBuilders.post("/users/1/update")
                         .param("id", "1")
-                        .param("name", ""))
-                .andExpect(MockMvcResultMatchers.status().is4xxClientError());
-                //.andExpect(MockMvcResultMatchers.model().attributeHasFieldErrors("user", "name"))
-                //.andExpect(MockMvcResultMatchers.view().name("users/edit"));
+                        .param(invalidFieldName, invalidFieldValue)
+                        .param("name", "aboba"))
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError())
+                .andExpect(MockMvcResultMatchers.model().attributeHasFieldErrors("user", invalidFieldName))
+                .andExpect(MockMvcResultMatchers.view().name("users/edit"));
 
         Mockito.verify(userService, Mockito.never()).update(Mockito.any());
     }
@@ -143,9 +147,9 @@ public class UserControllerTest {
     public void testCreateUserWithInvalidInput() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/users/create")
                         .param("name", ""))
-                .andExpect(MockMvcResultMatchers.status().is4xxClientError());
-                //.andExpect(MockMvcResultMatchers.model().attributeHasFieldErrors("user", "name"))
-                //.andExpect(MockMvcResultMatchers.view().name("users/new"));
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError())
+                .andExpect(MockMvcResultMatchers.model().attributeHasFieldErrors("user", "name"))
+                .andExpect(MockMvcResultMatchers.view().name("users/new"));
 
         Mockito.verify(userService, Mockito.never()).create(Mockito.any());
     }

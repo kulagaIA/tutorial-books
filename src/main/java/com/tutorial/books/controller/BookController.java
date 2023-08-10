@@ -4,14 +4,18 @@ import com.tutorial.books.entity.Book;
 import com.tutorial.books.entity.User;
 import com.tutorial.books.service.BookService;
 import com.tutorial.books.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import static com.tutorial.books.util.Constants.HTTP_STATUS_UNPROCESSABLE_CONTENT;
 
 @Controller
 public class BookController {
@@ -44,7 +48,15 @@ public class BookController {
     }
 
     @PostMapping("/books/create")
-    public String createBook(@ModelAttribute @Valid Book book, Model model) {
+    public String createBook(@ModelAttribute @Valid Book book,
+                             BindingResult bindingResult,
+                             Model model,
+                             HttpServletResponse response) {
+        if (bindingResult.hasErrors()) {
+            response.setStatus(HTTP_STATUS_UNPROCESSABLE_CONTENT);
+            return "books/new";
+        }
+
         bookService.create(book);
         return "redirect:/books";
     }
@@ -62,7 +74,16 @@ public class BookController {
     }
 
     @PostMapping("/books/{id}/update")
-    public String updateBook(@ModelAttribute @Valid Book book, @PathVariable("id") Integer id, Model model) {
+    public String updateBook(@PathVariable("id") Integer id,
+                             @ModelAttribute @Valid Book book,
+                             BindingResult bindingResult,
+                             Model model,
+                             HttpServletResponse response) {
+        if (bindingResult.hasErrors()) {
+            response.setStatus(HTTP_STATUS_UNPROCESSABLE_CONTENT);
+            return "books/edit";
+        }
+
         book.setId(id);
         bookService.update(book);
         return "redirect:/books";

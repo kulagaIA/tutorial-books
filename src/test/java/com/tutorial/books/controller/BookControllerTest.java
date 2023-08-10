@@ -150,9 +150,9 @@ public class BookControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/books/1/update")
                         .param("id", "1")
                         .param("name", ""))
-                .andExpect(MockMvcResultMatchers.status().is4xxClientError());
-        //.andExpect(MockMvcResultMatchers.model().attributeHasFieldErrors("user", "name"))
-        //.andExpect(MockMvcResultMatchers.view().name("users/edit"));
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError())
+        .andExpect(MockMvcResultMatchers.model().attributeHasFieldErrors("book", "name"))
+        .andExpect(MockMvcResultMatchers.view().name("books/edit"));
 
         verify(userService, Mockito.never()).update(Mockito.any());
     }
@@ -161,9 +161,9 @@ public class BookControllerTest {
     public void testCreateBookWithInvalidInput() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/books/create")
                         .param("name", ""))
-                .andExpect(MockMvcResultMatchers.status().is4xxClientError());
-        //.andExpect(MockMvcResultMatchers.model().attributeHasFieldErrors("user", "name"))
-        //.andExpect(MockMvcResultMatchers.view().name("users/new"));
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError())
+        .andExpect(MockMvcResultMatchers.model().attributeHasFieldErrors("book", "name"))
+        .andExpect(MockMvcResultMatchers.view().name("books/new"));
 
         verify(userService, Mockito.never()).create(Mockito.any());
     }
