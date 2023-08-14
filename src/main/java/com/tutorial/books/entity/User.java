@@ -1,6 +1,9 @@
 package com.tutorial.books.entity;
 
 import com.tutorial.books.util.validation.BirthYear;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
@@ -14,8 +17,12 @@ import static com.tutorial.books.util.Constants.USER_NAME_VALIDATION_ERROR;
 @Builder
 @EqualsAndHashCode
 @ToString
+
+@Entity
 public class User {
 
+    @Id
+    @GeneratedValue
     private Integer id;
 
     @NotEmpty(message = USER_NAME_VALIDATION_ERROR)

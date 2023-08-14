@@ -7,3 +7,6 @@ spring:
   liquibase:
     enabled: true
     changeLog: classpath:db/changelog/changelog.xml
+logging:
+  level:
+    root: DEBUG
