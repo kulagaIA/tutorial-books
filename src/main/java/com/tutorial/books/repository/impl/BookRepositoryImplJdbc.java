@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -16,8 +15,7 @@ import java.util.Optional;
 
 import static com.tutorial.books.util.Constants.*;
 
-@Repository
-public class BookJdbcRepositoryImpl implements BookRepository {
+public class BookRepositoryImplJdbc implements BookRepository {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

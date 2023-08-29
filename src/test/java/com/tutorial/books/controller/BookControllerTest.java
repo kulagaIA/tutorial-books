@@ -39,8 +39,12 @@ public class BookControllerTest {
     @Test
     public void testShowBooks() throws Exception {
         var books = new ArrayList<Book>();
-        books.add(new Book(1, "John", "Sus", 1995, 2));
-        books.add(new Book(2, "Alice", "Aboba", 1994, 5));
+        Book.builder().id(1).name("John").author("Sus").publishYear(1995).quantityAvailable(2).build();
+        books.add(
+                Book.builder().id(1).name("John").author("Sus").publishYear(1995).quantityAvailable(2).build());
+        books.add(
+                Book.builder().id(2).name("Alice").author("Aboba").publishYear(1994).quantityAvailable(5).build()
+        );
 
         Mockito.when(bookService.getAll()).thenReturn(books);
 
@@ -53,12 +57,12 @@ public class BookControllerTest {
     @Test
     public void testShowBook() throws Exception {
         var bookId = 32767;
-        var book = new Book(bookId, "sus", "aa", 123, 1);
-        var user1 = new User(1, "John1", 1991);
-        var user2 = new User(2, "John2", 1992);
+        var book = Book.builder().id(bookId).name("sus").author("aa").quantityAvailable(1).build();
+        var user1 = User.builder().id(1).name("John1").birthYear(1991).build();
+        var user2 = User.builder().id(2).name("John2").birthYear(1992).build();
         var usersWithBook = List.of(user1, user2);
-        var user3 = new User(3, "John3", 1993);
-        var user4 = new User(4, "John4", 1994);
+        var user3 = User.builder().id(3).name("John3").birthYear(1993).build();
+        var user4 = User.builder().id(4).name("John4").birthYear(1994).build();
         var usersWithoutBook = List.of(user3, user4);
 
         Mockito.when(bookService.getById(bookId)).thenReturn(book);
@@ -116,7 +120,7 @@ public class BookControllerTest {
 
     @Test
     public void testEditBook() throws Exception {
-        var book = new Book(1, "John", "Sus", 1995, 2);
+        var book = Book.builder().id(1).name("John").author("Sus").publishYear(1995).quantityAvailable(2).build();
         Mockito.when(bookService.getById(1)).thenReturn(book);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/books/1/edit"))

@@ -28,8 +28,8 @@ public class UserServiceImplTest {
 
     @Test
     void testGetAll() {
-        var user1 = new User(1, "lol", 32767);
-        var user2 = new User(2, "lal", 1991);
+        var user1 = User.builder().id(1).name("John1").birthYear(1991).build();
+        var user2 = User.builder().id(2).name("John2").birthYear(1992).build();
         when(userRepositoryMock.getAll()).thenReturn(List.of(user1, user2));
 
         var result = userService.getAll();
@@ -43,7 +43,7 @@ public class UserServiceImplTest {
     @Test
     void testGetById() {
         var id = 2;
-        var user = new User(id, "lal", 1991);
+        var user = User.builder().id(1).name("John1").birthYear(1991).build();
 
         when(userRepositoryMock.getById(id)).thenReturn(Optional.of(user));
 
@@ -56,7 +56,7 @@ public class UserServiceImplTest {
     @Test
     void testGetByIdUserNotExists() {
         var id = 2;
-        var user = new User(id, "lal", 1991);
+        var user = User.builder().id(1).name("John1").birthYear(1991).build();
 
         when(userRepositoryMock.getById(id)).thenReturn(Optional.empty());
 
@@ -66,8 +66,8 @@ public class UserServiceImplTest {
     @Test
     void testGetByBookId() {
         var id = 2;
-        var user1 = new User(1, "lol", 32767);
-        var user2 = new User(2, "lal", 1991);
+        var user1 = User.builder().id(1).name("John1").birthYear(1991).build();
+        var user2 = User.builder().id(2).name("John2").birthYear(1992).build();
 
         when(userRepositoryMock.getByBookId(id)).thenReturn(List.of(user1, user2));
 
@@ -109,9 +109,9 @@ public class UserServiceImplTest {
     @Test
     void testGetWithoutBookByBookId() {
         var id = 2;
-        var user1 = new User(1, "lol", 32767);
-        var user2 = new User(2, "lal", 1991);
-        var user3 = new User(2, "lil", 1985);
+        var user1 = User.builder().id(1).name("John1").birthYear(1991).build();
+        var user2 = User.builder().id(2).name("John2").birthYear(1992).build();
+        var user3 = User.builder().id(2).name("John3").birthYear(1993).build();
 
         when(userRepositoryMock.getWithoutBookByBookId(id)).thenReturn(List.of(user1, user2));
 

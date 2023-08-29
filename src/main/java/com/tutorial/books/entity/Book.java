@@ -1,9 +1,12 @@
 package com.tutorial.books.entity;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+
+import java.util.Set;
 
 import static com.tutorial.books.util.Constants.*;
 
@@ -14,8 +17,13 @@ import static com.tutorial.books.util.Constants.*;
 @Builder
 @EqualsAndHashCode
 @ToString
+
+@Entity
+@Table(name = "books")
 public class Book {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NotEmpty(message = BOOK_NAME_VALIDATION_ERROR)
@@ -30,4 +38,11 @@ public class Book {
     @Min(value = 0, message = BOOK_QUANTITY_AVAILABLE_VALIDATION_ERROR)
     @NotNull(message = BOOK_QUANTITY_AVAILABLE_VALIDATION_ERROR)
     private Integer quantityAvailable;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "users_books",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @EqualsAndHashCode.Exclude
+    private Set<User> users;
 }

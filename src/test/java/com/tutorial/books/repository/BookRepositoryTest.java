@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @ActiveProfiles("junit")
-public class BookJdbcRepositoryTest extends TutorialBooksRepositoryTest {
+public class BookRepositoryTest extends TutorialBooksRepositoryTest {
 
     @Autowired
     private BookRepository bookRepository;

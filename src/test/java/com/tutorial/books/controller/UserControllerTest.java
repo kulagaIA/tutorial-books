@@ -37,8 +37,8 @@ public class UserControllerTest {
     @Test
     public void testShowUsers() throws Exception {
         var users = new ArrayList<User>();
-        users.add(new User(1, "John", 1995));
-        users.add(new User(2, "Alice", 1994));
+        users.add(User.builder().id(1).name("John").birthYear(1995).build());
+        users.add(User.builder().id(2).name("Alice").birthYear(1994).build());
 
         Mockito.when(userService.getAll()).thenReturn(users);
 
@@ -51,9 +51,11 @@ public class UserControllerTest {
     @Test
     public void testShowUser() throws Exception {
         var userId = 1;
-        var user = new User(userId, "John", 1995);
-        var book1 = new Book(2, "sus", "aa", 123, 1);
-        var book2 = new Book(3, "aboba", "burgun", 1234, 5);
+        var user = User.builder().id(1).name("John").birthYear(1995).build();
+        var book1 =
+                Book.builder().id(2).name("sus").author("aa").publishYear(123).quantityAvailable(1).build();
+        var book2 =
+                Book.builder().id(3).name("aboba").author("burgun").publishYear(1234).quantityAvailable(5).build();
         Mockito.when(userService.getById(userId)).thenReturn(user);
         Mockito.when(bookService.getByUserId(userId)).thenReturn(List.of(book1, book2));
 
@@ -102,7 +104,7 @@ public class UserControllerTest {
 
     @Test
     public void testEditUser() throws Exception {
-        var user = new User(1, "John", 1995);
+        var user = User.builder().id(1).name("John").birthYear(1995).build();
         Mockito.when(userService.getById(1)).thenReturn(user);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/users/1/edit"))

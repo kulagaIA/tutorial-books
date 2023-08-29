@@ -61,7 +61,7 @@ public class TutorialBooksRepositoryTest {
                 .publishYear(new Random().nextInt(32767))
                 .name(RandomStringUtils.randomAlphabetic(10))
                 .author(RandomStringUtils.randomAlphabetic(20))
-                .quantityAvailable(new Random().nextInt(5))
+                .quantityAvailable(new Random().nextInt(5) + 1)
                 .build();
 
         book.setId(insertBook(book));

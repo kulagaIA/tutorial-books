@@ -1,11 +1,11 @@
 package com.tutorial.books.entity;
 
 import com.tutorial.books.util.validation.BirthYear;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
+
+import java.util.Set;
 
 import static com.tutorial.books.util.Constants.USER_BIRTH_YEAR_VALIDATION_ERROR;
 import static com.tutorial.books.util.Constants.USER_NAME_VALIDATION_ERROR;
@@ -19,10 +19,11 @@ import static com.tutorial.books.util.Constants.USER_NAME_VALIDATION_ERROR;
 @ToString
 
 @Entity
+@Table(name = "users")
 public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NotEmpty(message = USER_NAME_VALIDATION_ERROR)
@@ -30,5 +31,13 @@ public class User {
 
     @BirthYear(message = USER_BIRTH_YEAR_VALIDATION_ERROR)
     private Integer birthYear;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "users_books",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id"))
+    @EqualsAndHashCode.Exclude
+    private Set<Book> books;
+
 
 }

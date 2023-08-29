@@ -16,7 +16,7 @@ import java.util.Optional;
 import static com.tutorial.books.util.Constants.*;
 
 
-public class UserJdbcRepositoryImpl implements UserRepository {
+public class UserRepositoryImplJdbc implements UserRepository {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

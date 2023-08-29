@@ -1,7 +1,6 @@
 package com.tutorial.books.repository;
 
 import com.tutorial.books.entity.User;
-import com.tutorial.books.repository.impl.UserJpaRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +12,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @ActiveProfiles("junit")
-public class UserJdbcRepositoryTest extends TutorialBooksRepositoryTest {
+public class UserRepositoryTest extends TutorialBooksRepositoryTest {
 
     @Autowired
-    private UserJpaRepositoryImpl repository;
+    private UserRepository repository;
 
     @Autowired
     private BookRepository bookRepository;
@@ -97,7 +96,7 @@ public class UserJdbcRepositoryTest extends TutorialBooksRepositoryTest {
 
     @Test
     void testCreate() {
-        var user = User.builder().name("aboba").birthYear(32767).build();
+        var user = User.builder().name("aboba").birthYear(2010).build();
 
         var result = repository.getById(repository.create(user).getId());
 
@@ -120,7 +119,7 @@ public class UserJdbcRepositoryTest extends TutorialBooksRepositoryTest {
     void testUpdate() {
         var user = createUser();
         user.setName("aboba");
-        user.setBirthYear(11);
+        user.setBirthYear(2010);
         repository.update(user);
 
         var result = repository.getById(user.getId());

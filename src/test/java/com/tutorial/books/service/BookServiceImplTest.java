@@ -29,8 +29,10 @@ public class BookServiceImplTest {
 
     @Test
     void testGetAll() {
-        var book1 = new Book(1, "lol", "abobus", 32767, 10);
-        var book2 = new Book(1, "lol", "abobus", 32767, 10);
+        var book1 =
+                Book.builder().id(2).name("sus").author("aa").publishYear(123).quantityAvailable(1).build();
+        var book2 =
+                Book.builder().id(3).name("aboba").author("burgun").publishYear(1234).quantityAvailable(5).build();
 
         when(bookRepositoryMock.getAll()).thenReturn(List.of(book1, book2));
 
@@ -45,7 +47,8 @@ public class BookServiceImplTest {
     @Test
     void testGetById() {
         var id = 2;
-        var book = new Book(1, "lol", "abobus", 32767, 10);
+        var book =
+                Book.builder().id(2).name("sus").author("aa").publishYear(123).quantityAvailable(1).build();
 
         when(bookRepositoryMock.getById(id)).thenReturn(Optional.of(book));
 
@@ -67,8 +70,10 @@ public class BookServiceImplTest {
     @Test
     void testGetByUserId() {
         var id = 2;
-        var book1 = new Book(id, "lol", "abobus", 32767, 10);
-        var book2 = new Book(id, "lol", "abobus", 32767, 10);
+        var book1 =
+                Book.builder().id(2).name("sus").author("aa").publishYear(123).quantityAvailable(1).build();
+        var book2 =
+                Book.builder().id(3).name("aboba").author("burgun").publishYear(1234).quantityAvailable(5).build();
 
         when(bookRepositoryMock.getByUserId(id)).thenReturn(List.of(book1, book2));
 

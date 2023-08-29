@@ -16,7 +16,7 @@ public class Constants {
 
     public static final String BOOK_PUBLISH_YEAR_VALIDATION_ERROR = "book publish year must exist and must be more than 0";
 
-    public static final String BOOK_QUANTITY_AVAILABLE_VALIDATION_ERROR = "quantity of available books must exist and must be more than 0";
+    public static final String BOOK_QUANTITY_AVAILABLE_VALIDATION_ERROR = "quantity of available books must exist and must be minimum 0";
 
     public static final String USER_NAME_VALIDATION_ERROR = "user name must not be empty";
 

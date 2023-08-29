@@ -9,14 +9,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class UserJpaRepositoryImpl implements UserRepository {
-
-    private UserJpaRepository userJpaRepository;
+public class UserRepositoryImplJpa implements UserRepository {
 
     @Autowired
-    public UserJpaRepositoryImpl(UserJpaRepository userJpaRepository) {
-        this.userJpaRepository = userJpaRepository;
-    }
+    private UserJpaRepository userJpaRepository;
 
     @Override
     public List<User> getAll() {
@@ -30,7 +26,7 @@ public class UserJpaRepositoryImpl implements UserRepository {
 
     @Override
     public List<User> getByBookId(Integer bookId) {
-        return null;
+        return userJpaRepository.findByBooksId(bookId);
     }
 
     @Override
@@ -50,6 +46,6 @@ public class UserJpaRepositoryImpl implements UserRepository {
 
     @Override
     public List<User> getWithoutBookByBookId(Integer bookId) {
-        return null;
+        return userJpaRepository.findDistinctByBooksIdNot(bookId);
     }
 }
