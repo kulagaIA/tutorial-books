@@ -8,5 +8,4 @@ import java.util.List;
 public interface UserJpaRepository extends JpaRepository<User, Integer> {
     public List<User> findByBooksId(Integer bookId);
 
-    public List<User> findDistinctByBooksIdNot(Integer bookId);
 }
