@@ -1,15 +1,11 @@
 package com.tutorial.books.repository.impl;
 
+import com.tutorial.books.entity.Book_;
 import com.tutorial.books.entity.User;
 import com.tutorial.books.entity.User_;
 import com.tutorial.books.repository.UserRepository;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -56,17 +52,19 @@ public class UserRepositoryImplJpa implements UserRepository {
 
     @Override
     public List<User> getWithoutBookByBookId(Integer bookId) {
-        return null;
-    }
+        var cb = entityManager.getCriteriaBuilder();
+        var query = cb.createQuery(User.class);
+        var root = query.from(User.class);
 
-    private Specification<User> nameLike(String name){
-        return new Specification<User>() {
-            @Override
-            public Predicate toPredicate(Root<User> root,
-                                         CriteriaQuery<?> query,
-                                         CriteriaBuilder criteriaBuilder) {
-                return criteriaBuilder.like(root.get(User_.NAME), "%"+name+"%");
-            }
-        };
+        var usersWithBookSubQuery = query.subquery(Integer.class);
+        var usersWithBookSubQueryRoot = usersWithBookSubQuery.from(User.class);
+        var subJoin = usersWithBookSubQueryRoot.join(User_.books);
+        usersWithBookSubQuery.where(cb.equal(subJoin.get(Book_.id), bookId));
+        usersWithBookSubQuery.select(usersWithBookSubQueryRoot.get(User_.id));
+
+        query.where(root.get(User_.id).in(usersWithBookSubQuery).not());
+        query.select(root);
+
+        return entityManager.createQuery(query).getResultList();
     }
 }
