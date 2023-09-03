@@ -2,6 +2,8 @@ package com.tutorial.books.repository.impl;
 
 import com.tutorial.books.entity.Book;
 import com.tutorial.books.repository.BookRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +15,12 @@ public class BookRepositoryImplJpa implements BookRepository {
 
     @Autowired
     private BookJpaRepository bookJpaRepository;
+
+    @Autowired
+    private UserJpaRepository userJpaRepository;
+
+    @Autowired
+    private EntityManager entityManager;
 
     @Override
     public List<Book> getAll() {
@@ -26,7 +34,7 @@ public class BookRepositoryImplJpa implements BookRepository {
 
     @Override
     public List<Book> getByUserId(Integer userId) {
-        return null;
+        return bookJpaRepository.findByUsersId(userId);
     }
 
     @Override
@@ -45,7 +53,11 @@ public class BookRepositoryImplJpa implements BookRepository {
     }
 
     @Override
+    @Transactional
     public void bindToUser(Integer bookId, Integer userId) {
+        var user = userJpaRepository.findById(userId).orElseThrow();
+        user.getBooks().add(bookJpaRepository.findById(bookId).orElseThrow());
+        userJpaRepository.save(user);
     }
 
     @Override
@@ -56,7 +68,11 @@ public class BookRepositoryImplJpa implements BookRepository {
     }
 
     @Override
+    @Transactional
     public void unbindFromUser(Integer bookId, Integer userId) {
+        var user = userJpaRepository.findById(userId).orElseThrow();
+        user.getBooks().remove(bookJpaRepository.findById(bookId).orElseThrow());
+        userJpaRepository.save(user);
     }
 
     @Override
