@@ -1,6 +1,7 @@
 package com.tutorial.books.repository.impl;
 
 import com.tutorial.books.entity.Book;
+import com.tutorial.books.entity.Book_;
 import com.tutorial.books.repository.BookRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
@@ -61,10 +62,13 @@ public class BookRepositoryImplJpa implements BookRepository {
     }
 
     @Override
+    @Transactional
     public void decreaseQuantityAvailable(Integer bookId) {
-        var book = bookJpaRepository.findById(bookId).orElseThrow();
-        book.setQuantityAvailable(book.getQuantityAvailable() - 1);
-        bookJpaRepository.save(book);
+        var cb = entityManager.getCriteriaBuilder();
+        var update = cb.createCriteriaUpdate(Book.class);
+        var bookRoot = update.from(Book.class);
+        update.set(Book_.quantityAvailable, cb.diff(bookRoot.get(Book_.quantityAvailable), 1));
+        entityManager.createQuery(update).executeUpdate();
     }
 
     @Override
@@ -76,9 +80,12 @@ public class BookRepositoryImplJpa implements BookRepository {
     }
 
     @Override
+    @Transactional
     public void increaseQuantityAvailable(Integer id) {
-        var book = bookJpaRepository.findById(id).orElseThrow();
-        book.setQuantityAvailable(book.getQuantityAvailable() + 1);
-        bookJpaRepository.save(book);
+        var cb = entityManager.getCriteriaBuilder();
+        var update = cb.createCriteriaUpdate(Book.class);
+        var bookRoot = update.from(Book.class);
+        update.set(Book_.quantityAvailable, cb.sum(bookRoot.get(Book_.quantityAvailable), 1));
+        entityManager.createQuery(update).executeUpdate();
     }
 }
