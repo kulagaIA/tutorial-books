@@ -96,7 +96,7 @@ public class UserRepositoryTest extends TutorialBooksRepositoryTest {
 
     @Test
     void testCreate() {
-        var user = User.builder().name("aboba").birthYear(2010).build();
+        var user = User.builder().username("aboba").birthYear(2010).build();
 
         var result = repository.getById(repository.create(user).getId());
 
@@ -118,7 +118,7 @@ public class UserRepositoryTest extends TutorialBooksRepositoryTest {
     @Test
     void testUpdate() {
         var user = createUser();
-        user.setName("aboba");
+        user.setUsername("aboba");
         user.setBirthYear(2010);
         repository.update(user);
 

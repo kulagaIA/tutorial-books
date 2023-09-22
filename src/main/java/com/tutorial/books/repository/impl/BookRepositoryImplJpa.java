@@ -68,6 +68,7 @@ public class BookRepositoryImplJpa implements BookRepository {
         var update = cb.createCriteriaUpdate(Book.class);
         var bookRoot = update.from(Book.class);
         update.set(Book_.quantityAvailable, cb.diff(bookRoot.get(Book_.quantityAvailable), 1));
+        update.where(cb.equal(bookRoot.get(Book_.id), bookId));
         entityManager.createQuery(update).executeUpdate();
     }
 
@@ -81,11 +82,12 @@ public class BookRepositoryImplJpa implements BookRepository {
 
     @Override
     @Transactional
-    public void increaseQuantityAvailable(Integer id) {
+    public void increaseQuantityAvailable(Integer bookId) {
         var cb = entityManager.getCriteriaBuilder();
         var update = cb.createCriteriaUpdate(Book.class);
         var bookRoot = update.from(Book.class);
         update.set(Book_.quantityAvailable, cb.sum(bookRoot.get(Book_.quantityAvailable), 1));
+        update.where(cb.equal(bookRoot.get(Book_.id), bookId));
         entityManager.createQuery(update).executeUpdate();
     }
 }

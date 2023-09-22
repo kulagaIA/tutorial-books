@@ -20,8 +20,14 @@ public class Constants {
 
     public static final String USER_NAME_VALIDATION_ERROR = "user name must not be empty";
 
+    public static final String USER_USERNAME_VALIDATION_ERROR = "user username must not be empty";
+
+    public static final String USER_PASSWORD_VALIDATION_ERROR = "user password must not be empty";
+
     public static final String USER_BIRTH_YEAR_VALIDATION_ERROR = "user birth year must exist " +
             "and must be more than 1899 and no more than current year";
+
+    public static final String USERNAME_NOT_FOUND = "Username not found";
 
     public static final Integer HTTP_STATUS_UNPROCESSABLE_CONTENT = 422;
 }

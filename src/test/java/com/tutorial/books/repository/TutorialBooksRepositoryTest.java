@@ -42,7 +42,7 @@ public class TutorialBooksRepositoryTest {
     protected User createUser() {
         var user = User.builder()
                 .birthYear(new Random().nextInt(32767))
-                .name(RandomStringUtils.randomAlphabetic(10))
+                .username(RandomStringUtils.randomAlphabetic(10))
                 .build();
 
         user.setId(insertUser(user));
@@ -63,6 +63,14 @@ public class TutorialBooksRepositoryTest {
                 .author(RandomStringUtils.randomAlphabetic(20))
                 .quantityAvailable(new Random().nextInt(5) + 1)
                 .build();
+
+        book.setId(insertBook(book));
+
+        return book;
+    }
+
+    protected Book createBook(Book.BookBuilder builder) {
+        var book = builder.build();
 
         book.setId(insertBook(book));
 

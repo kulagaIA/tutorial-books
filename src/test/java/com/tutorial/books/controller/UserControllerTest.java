@@ -37,8 +37,8 @@ public class UserControllerTest {
     @Test
     public void testShowUsers() throws Exception {
         var users = new ArrayList<User>();
-        users.add(User.builder().id(1).name("John").birthYear(1995).build());
-        users.add(User.builder().id(2).name("Alice").birthYear(1994).build());
+        users.add(User.builder().id(1).username("John").birthYear(1995).build());
+        users.add(User.builder().id(2).username("Alice").birthYear(1994).build());
 
         Mockito.when(userService.getAll()).thenReturn(users);
 
@@ -51,7 +51,7 @@ public class UserControllerTest {
     @Test
     public void testShowUser() throws Exception {
         var userId = 1;
-        var user = User.builder().id(1).name("John").birthYear(1995).build();
+        var user = User.builder().id(1).username("John").birthYear(1995).build();
         var book1 =
                 Book.builder().id(2).name("sus").author("aa").publishYear(123).quantityAvailable(1).build();
         var book2 =
@@ -85,7 +85,7 @@ public class UserControllerTest {
         Mockito.verify(userService).create(userCaptor.capture());
 
         var capturedUser = userCaptor.getValue();
-        Assertions.assertEquals("Alice", capturedUser.getName());
+        Assertions.assertEquals("Alice", capturedUser.getUsername());
         Assertions.assertEquals(1996, capturedUser.getBirthYear());
     }
 
@@ -104,7 +104,7 @@ public class UserControllerTest {
 
     @Test
     public void testEditUser() throws Exception {
-        var user = User.builder().id(1).name("John").birthYear(1995).build();
+        var user = User.builder().id(1).username("John").birthYear(1995).build();
         Mockito.when(userService.getById(1)).thenReturn(user);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/users/1/edit"))
@@ -125,7 +125,7 @@ public class UserControllerTest {
 
         var capturedUser = userCaptor.getValue();
         Assertions.assertEquals(1, capturedUser.getId());
-        Assertions.assertEquals("Updated Name", capturedUser.getName());
+        Assertions.assertEquals("Updated Name", capturedUser.getUsername());
         Assertions.assertEquals(1996, capturedUser.getBirthYear());
     }
 

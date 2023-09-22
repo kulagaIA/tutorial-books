@@ -7,7 +7,7 @@ import java.util.Calendar;
 
 public class BirthYearValidator implements ConstraintValidator<BirthYear, Integer> {
 
-    private static final Integer MIN_BIRTH_YEAR = 1900;
+    private static final Integer MIN_BIRTH_YEAR = Calendar.getInstance().get(Calendar.YEAR) - 130;
 
     @Override
     public void initialize(BirthYear constraintAnnotation) {

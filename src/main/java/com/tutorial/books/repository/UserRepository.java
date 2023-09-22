@@ -20,4 +20,6 @@ public interface UserRepository {
     void update(User user);
 
     List<User> getWithoutBookByBookId(Integer bookId);
+
+    Optional<User> getByUsername(String username);
 }

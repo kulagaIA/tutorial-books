@@ -58,11 +58,11 @@ public class BookControllerTest {
     public void testShowBook() throws Exception {
         var bookId = 32767;
         var book = Book.builder().id(bookId).name("sus").author("aa").quantityAvailable(1).build();
-        var user1 = User.builder().id(1).name("John1").birthYear(1991).build();
-        var user2 = User.builder().id(2).name("John2").birthYear(1992).build();
+        var user1 = User.builder().id(1).username("John1").birthYear(1991).build();
+        var user2 = User.builder().id(2).username("John2").birthYear(1992).build();
         var usersWithBook = List.of(user1, user2);
-        var user3 = User.builder().id(3).name("John3").birthYear(1993).build();
-        var user4 = User.builder().id(4).name("John4").birthYear(1994).build();
+        var user3 = User.builder().id(3).username("John3").birthYear(1993).build();
+        var user4 = User.builder().id(4).username("John4").birthYear(1994).build();
         var usersWithoutBook = List.of(user3, user4);
 
         Mockito.when(bookService.getById(bookId)).thenReturn(book);

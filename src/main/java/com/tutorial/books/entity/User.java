@@ -7,8 +7,7 @@ import lombok.*;
 
 import java.util.Set;
 
-import static com.tutorial.books.util.Constants.USER_BIRTH_YEAR_VALIDATION_ERROR;
-import static com.tutorial.books.util.Constants.USER_NAME_VALIDATION_ERROR;
+import static com.tutorial.books.util.Constants.*;
 
 @Getter
 @Setter
@@ -39,5 +38,11 @@ public class User {
     @EqualsAndHashCode.Exclude
     private Set<Book> books;
 
+    @NotEmpty(message = USER_USERNAME_VALIDATION_ERROR)
+    private String username;
 
+    @NotEmpty(message = USER_PASSWORD_VALIDATION_ERROR)
+    private String password;
+
+    private String salt;
 }

@@ -67,4 +67,9 @@ public class UserRepositoryImplJpa implements UserRepository {
 
         return entityManager.createQuery(query).getResultList();
     }
+
+    @Override
+    public Optional<User> getByUsername(String username) {
+        return userJpaRepository.findByUsername(username);
+    }
 }

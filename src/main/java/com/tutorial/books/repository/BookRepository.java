@@ -25,5 +25,5 @@ public interface BookRepository {
 
     void unbindFromUser(Integer bookId, Integer userId);
 
-    void increaseQuantityAvailable(Integer id);
+    void increaseQuantityAvailable(Integer bookId);
 }

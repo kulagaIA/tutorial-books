@@ -23,4 +23,7 @@
     <include file="changelog-1.11_add_constraints_for_table_books.xml" relativeToChangelogFile="true"/>
     <include file="changelog-1.12_add_constraints_for_table_books.sql" relativeToChangelogFile="true"/>
     <include file="changelog-1.13_add_constraints_for_table_users_books.xml" relativeToChangelogFile="true"/>
+    <include file="changelog-1.14_change_table_users_add_column_username.xml" relativeToChangelogFile="true"/>
+    <include file="changelog-1.15_change_table_users_add_column_password.xml" relativeToChangelogFile="true"/>
+    <include file="changelog-1.16_change_table_users_add_column_salt.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

@@ -135,6 +135,22 @@ public class BookRepositoryTest extends TutorialBooksRepositoryTest {
     }
 
     @Test
+    void testDecreaseQuantityAvailableWhenOtherBookHasZeroQuantityAvailable() {
+        var book = createBook();
+        createBook(Book.builder().quantityAvailable(0)
+                .author("Author_SUS")
+                .publishYear(32767)
+                .name("ABoba_SUS"));
+
+        bookRepository.decreaseQuantityAvailable(book.getId());
+
+        var result = bookRepository.getById(book.getId());
+
+        assertThat(result.isPresent()).isTrue();
+        assertThat(result.get().getQuantityAvailable()).isEqualTo(book.getQuantityAvailable() - 1);
+    }
+
+    @Test
     void testUnbindFromUser() {
         var user = createUser();
         var book = createBook();
