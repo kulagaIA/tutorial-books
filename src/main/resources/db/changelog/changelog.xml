@@ -26,4 +26,9 @@
     <include file="changelog-1.14_change_table_users_add_column_username.xml" relativeToChangelogFile="true"/>
     <include file="changelog-1.15_change_table_users_add_column_password.xml" relativeToChangelogFile="true"/>
     <include file="changelog-1.16_change_table_users_add_column_salt.xml" relativeToChangelogFile="true"/>
+    <include file="changelog-1.17_change_table_users_remove_column_salt.xml" relativeToChangelogFile="true"/>
+    <include file="changelog-1.18_create_table_roles.xml" relativeToChangelogFile="true"/>
+    <include file="changelog-1.19_create_table_users_roles.xml" relativeToChangelogFile="true"/>
+    <include file="changelog-1.20_fill_table_roles.xml" relativeToChangelogFile="true"/>
+    <include file="changelog-1.21_fill_table_users_roles.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

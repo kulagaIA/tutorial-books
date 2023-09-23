@@ -30,4 +30,9 @@ public class Constants {
     public static final String USERNAME_NOT_FOUND = "Username not found";
 
     public static final Integer HTTP_STATUS_UNPROCESSABLE_CONTENT = 422;
+
+    public static final String ADMIN = "ROLE_admin";
+    public static final String LIBRARIAN = "ROLE_librarian";
+    public static final String USER = "ROLE_user";
+    public static final String VIEWER = "ROLE_viewer";
 }

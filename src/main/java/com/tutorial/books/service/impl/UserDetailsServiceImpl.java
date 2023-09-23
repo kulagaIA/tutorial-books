@@ -2,6 +2,7 @@ package com.tutorial.books.service.impl;
 
 import com.tutorial.books.repository.UserRepository;
 import com.tutorial.books.security.LibraryUserDetails;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,6 +18,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private UserRepository userRepository;
 
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var user = userRepository.getByUsername(username).orElseThrow(
                 () -> new UsernameNotFoundException(USERNAME_NOT_FOUND));

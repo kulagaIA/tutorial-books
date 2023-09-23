@@ -8,7 +8,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 
 @Getter
 @Setter
@@ -30,13 +29,16 @@ public class LibraryUserDetails implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    private LibraryUserDetails(){}
+    private LibraryUserDetails() {
+    }
 
     public static UserDetails buildFromUser(User user) {
         var libraryUserDetails = new LibraryUserDetails();
         libraryUserDetails.setUsername(user.getUsername());
         libraryUserDetails.setPassword(user.getPassword());
-        libraryUserDetails.setAuthorities(List.of(new SimpleGrantedAuthority("ROLE_aboba")));
+        libraryUserDetails.setAuthorities(user.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority(role.getName().label))
+                .toList());
         libraryUserDetails.setAccountNonLocked(true);
         libraryUserDetails.setAccountNonExpired(true);
         libraryUserDetails.setCredentialsNonExpired(true);

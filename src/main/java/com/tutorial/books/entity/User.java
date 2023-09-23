@@ -44,5 +44,10 @@ public class User {
     @NotEmpty(message = USER_PASSWORD_VALIDATION_ERROR)
     private String password;
 
-    private String salt;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @EqualsAndHashCode.Exclude
+    private Set<Role> roles;
 }
