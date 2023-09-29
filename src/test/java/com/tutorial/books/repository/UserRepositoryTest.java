@@ -1,11 +1,15 @@
 package com.tutorial.books.repository;
 
 import com.tutorial.books.entity.User;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+
+import java.util.Calendar;
+import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -96,7 +100,12 @@ public class UserRepositoryTest extends TutorialBooksRepositoryTest {
 
     @Test
     void testCreate() {
-        var user = User.builder().username("aboba").birthYear(2010).build();
+        var user = User.builder()
+                .birthYear(Calendar.getInstance().get(Calendar.YEAR) - new Random().nextInt(130))
+                .username(RandomStringUtils.randomAlphabetic(10))
+                .password(RandomStringUtils.randomAlphabetic(20))
+                .name(RandomStringUtils.randomAlphabetic(20))
+                .build();
 
         var result = repository.getById(repository.create(user).getId());
 

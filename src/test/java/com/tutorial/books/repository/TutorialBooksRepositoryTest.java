@@ -2,16 +2,17 @@ package com.tutorial.books.repository;
 
 import com.tutorial.books.entity.Book;
 import com.tutorial.books.entity.User;
+import com.tutorial.books.repository.impl.BookJpaRepository;
+import com.tutorial.books.repository.impl.UserJpaRepository;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import javax.sql.DataSource;
+import java.util.Calendar;
 import java.util.Random;
 
-import static com.tutorial.books.util.Constants.*;
+import static com.tutorial.books.util.Constants.TABLE_NAME_USERS_BOOKS;
 
 public class TutorialBooksRepositoryTest {
 
@@ -21,8 +22,14 @@ public class TutorialBooksRepositoryTest {
     @Autowired
     protected JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    protected UserJpaRepository userJpaRepository;
+
+    @Autowired
+    protected BookJpaRepository bookJpaRepository;
+
     protected void deleteAllBooks() {
-        jdbcTemplate.execute("delete from " + TABLE_NAME_BOOKS);
+        bookJpaRepository.deleteAll();
     }
 
     protected void deleteUsersBooks() {
@@ -36,16 +43,18 @@ public class TutorialBooksRepositoryTest {
     }
 
     protected void deleteAllUsers() {
-        jdbcTemplate.execute("delete from " + TABLE_NAME_USERS);
+        userJpaRepository.deleteAll();
     }
 
     protected User createUser() {
         var user = User.builder()
-                .birthYear(new Random().nextInt(32767))
+                .birthYear(Calendar.getInstance().get(Calendar.YEAR) - new Random().nextInt(130))
                 .username(RandomStringUtils.randomAlphabetic(10))
+                .password(RandomStringUtils.randomAlphabetic(20))
+                .name(RandomStringUtils.randomAlphabetic(20))
                 .build();
 
-        user.setId(insertUser(user));
+        userJpaRepository.save(user);
 
         return user;
     }
@@ -64,7 +73,7 @@ public class TutorialBooksRepositoryTest {
                 .quantityAvailable(new Random().nextInt(5) + 1)
                 .build();
 
-        book.setId(insertBook(book));
+        bookJpaRepository.save(book);
 
         return book;
     }
@@ -72,26 +81,8 @@ public class TutorialBooksRepositoryTest {
     protected Book createBook(Book.BookBuilder builder) {
         var book = builder.build();
 
-        book.setId(insertBook(book));
+        bookJpaRepository.save(book);
 
         return book;
-    }
-
-    protected Integer insertBook(Book book) {
-        var simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
-                .withTableName(TABLE_NAME_BOOKS).usingGeneratedKeyColumns(COLUMN_NAME_BOOKS_ID);
-
-        BeanPropertySqlParameterSource paramSource = new BeanPropertySqlParameterSource(book);
-
-        return (int) simpleJdbcInsert.executeAndReturnKey(paramSource);
-    }
-
-    protected Integer insertUser(User user) {
-        var simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
-                .withTableName(TABLE_NAME_USERS).usingGeneratedKeyColumns(COLUMN_NAME_USERS_ID);
-
-        BeanPropertySqlParameterSource paramSource = new BeanPropertySqlParameterSource(user);
-
-        return (int) simpleJdbcInsert.executeAndReturnKey(paramSource);
     }
 }

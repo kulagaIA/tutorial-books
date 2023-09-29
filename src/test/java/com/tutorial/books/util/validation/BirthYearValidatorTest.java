@@ -26,7 +26,7 @@ public class BirthYearValidatorTest {
 
     @Test
     void testYearLessThanMin() {
-        assertThat(birthYearValidator.isValid(1899, context)).isFalse();
+        assertThat(birthYearValidator.isValid(Calendar.getInstance().get(Calendar.YEAR) - 131, context)).isFalse();
     }
 
     @Test
