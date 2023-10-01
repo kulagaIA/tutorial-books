@@ -1,6 +1,8 @@
 package com.tutorial.books.entity;
 
 import com.tutorial.books.util.validation.BirthYear;
+import com.tutorial.books.util.validation.groups.CreateUserInfo;
+import com.tutorial.books.util.validation.groups.UpdateUserInfo;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
@@ -25,10 +27,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotEmpty(message = USER_NAME_VALIDATION_ERROR)
+    @NotEmpty(
+            groups = {CreateUserInfo.class, UpdateUserInfo.class},
+            message = USER_NAME_VALIDATION_ERROR)
     private String name;
 
-    @BirthYear(message = USER_BIRTH_YEAR_VALIDATION_ERROR)
+    @BirthYear(
+            groups = {CreateUserInfo.class, UpdateUserInfo.class},
+            message = USER_BIRTH_YEAR_VALIDATION_ERROR)
     private Integer birthYear;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -38,10 +44,10 @@ public class User {
     @EqualsAndHashCode.Exclude
     private Set<Book> books;
 
-    @NotEmpty(message = USER_USERNAME_VALIDATION_ERROR)
+    @NotEmpty(groups = CreateUserInfo.class, message = USER_USERNAME_VALIDATION_ERROR)
     private String username;
 
-    @NotEmpty(message = USER_PASSWORD_VALIDATION_ERROR)
+    @NotEmpty(groups = CreateUserInfo.class, message = USER_PASSWORD_VALIDATION_ERROR)
     private String password;
 
     @ManyToMany(fetch = FetchType.LAZY)

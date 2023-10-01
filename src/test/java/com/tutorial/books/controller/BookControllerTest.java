@@ -12,6 +12,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.verify;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 @WebMvcTest(BookController.class)
 public class BookControllerTest {
@@ -36,6 +38,7 @@ public class BookControllerTest {
     @Captor
     ArgumentCaptor<Book> bookCaptor;
 
+    @WithMockUser
     @Test
     public void testShowBooks() throws Exception {
         var books = new ArrayList<Book>();
@@ -54,6 +57,7 @@ public class BookControllerTest {
                 .andExpect(MockMvcResultMatchers.view().name("books/books"));
     }
 
+    @WithMockUser
     @Test
     public void testShowBook() throws Exception {
         var bookId = 32767;
@@ -78,6 +82,7 @@ public class BookControllerTest {
                 .andExpect(MockMvcResultMatchers.view().name("books/book"));
     }
 
+    @WithMockUser
     @Test
     public void testShowNewBookPage() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/books/new"))
@@ -86,9 +91,11 @@ public class BookControllerTest {
                 .andExpect(MockMvcResultMatchers.view().name("books/new"));
     }
 
+    @WithMockUser
     @Test
     public void testCreateBook() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/books/create")
+                        .with(csrf())
                         .param("name", "Alice")
                         .param("author", "Aboba")
                         .param("quantityAvailable", "32767")
@@ -105,6 +112,7 @@ public class BookControllerTest {
         Assertions.assertEquals(32767, capturedBook.getQuantityAvailable());
     }
 
+    @WithMockUser
     @Test
     public void testDeleteBook() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/books/1/delete"))
@@ -118,6 +126,7 @@ public class BookControllerTest {
         Assertions.assertEquals(1, capturedId.intValue());
     }
 
+    @WithMockUser
     @Test
     public void testEditBook() throws Exception {
         var book = Book.builder().id(1).name("John").author("Sus").publishYear(1995).quantityAvailable(2).build();
@@ -129,9 +138,11 @@ public class BookControllerTest {
                 .andExpect(MockMvcResultMatchers.view().name("books/edit"));
     }
 
+    @WithMockUser
     @Test
     public void testUpdateBook() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/books/1/update")
+                        .with(csrf())
                         .param("name", "Alice")
                         .param("author", "Updated Aboba")
                         .param("quantityAvailable", "32767")
@@ -149,9 +160,11 @@ public class BookControllerTest {
         Assertions.assertEquals(32767, capturedBook.getQuantityAvailable());
     }
 
+    @WithMockUser
     @Test
     public void testUpdateBookWithInvalidInput() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/books/1/update")
+                        .with(csrf())
                         .param("id", "1")
                         .param("name", ""))
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError())
@@ -161,9 +174,11 @@ public class BookControllerTest {
         verify(userService, Mockito.never()).update(Mockito.any());
     }
 
+    @WithMockUser
     @Test
     public void testCreateBookWithInvalidInput() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/books/create")
+                        .with(csrf())
                         .param("name", ""))
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError())
         .andExpect(MockMvcResultMatchers.model().attributeHasFieldErrors("book", "name"))
@@ -172,12 +187,14 @@ public class BookControllerTest {
         verify(userService, Mockito.never()).create(Mockito.any());
     }
 
+    @WithMockUser
     @Test
     public void testGiveToUser() throws Exception {
         Integer userId = 123;
         Integer bookId = 32767;
 
         mockMvc.perform(MockMvcRequestBuilders.post("/books/" + bookId + "/give")
+                        .with(csrf())
                         .param("id", userId.toString()))
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
                 .andExpect(MockMvcResultMatchers.redirectedUrl("/books/" + bookId));
@@ -185,12 +202,14 @@ public class BookControllerTest {
         verify(bookService).giveToUser(bookId, userId);
     }
 
+    @WithMockUser
     @Test
     public void testReturnFromUser() throws Exception {
         Integer userId = 123;
         Integer bookId = 32767;
 
         mockMvc.perform(MockMvcRequestBuilders.post("/books/" + bookId + "/return")
+                        .with(csrf())
                         .param("id", userId.toString()))
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
                 .andExpect(MockMvcResultMatchers.redirectedUrl("/books/" + bookId));

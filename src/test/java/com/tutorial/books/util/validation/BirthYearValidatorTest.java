@@ -38,4 +38,9 @@ public class BirthYearValidatorTest {
     void testNull() {
         assertThat(birthYearValidator.isValid(null, context)).isFalse();
     }
+
+    @Test
+    void testMinusBigNumber() {
+        assertThat(birthYearValidator.isValid(-32767, context)).isFalse();
+    }
 }

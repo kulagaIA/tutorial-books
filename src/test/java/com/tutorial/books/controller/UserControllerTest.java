@@ -4,6 +4,7 @@ import com.tutorial.books.entity.Book;
 import com.tutorial.books.entity.User;
 import com.tutorial.books.service.BookService;
 import com.tutorial.books.service.UserService;
+import com.tutorial.books.util.Constants;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -12,12 +13,15 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 @WebMvcTest(UserController.class)
 public class UserControllerTest {
@@ -34,6 +38,7 @@ public class UserControllerTest {
     @Captor
     ArgumentCaptor<User> userCaptor;
 
+    @WithMockUser
     @Test
     public void testShowUsers() throws Exception {
         var users = new ArrayList<User>();
@@ -48,6 +53,7 @@ public class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.view().name("users/users"));
     }
 
+    @WithMockUser
     @Test
     public void testShowUser() throws Exception {
         var userId = 1;
@@ -66,6 +72,7 @@ public class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.view().name("users/user"));
     }
 
+    @WithMockUser
     @Test
     public void testShowNewUserPage() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/users/new"))
@@ -74,21 +81,28 @@ public class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.view().name("users/new"));
     }
 
+    @WithMockUser
     @Test
     public void testCreateUser() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/users/create")
+                        .with(csrf())
                         .param("name", "Alice")
-                        .param("birthYear", "1996"))
+                        .param("birthYear", "1996")
+                        .param("username", "ABOBA")
+                        .param("password", "definitelySafePassword"))
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
                 .andExpect(MockMvcResultMatchers.view().name("redirect:/users"));
 
         Mockito.verify(userService).create(userCaptor.capture());
 
         var capturedUser = userCaptor.getValue();
-        Assertions.assertEquals("Alice", capturedUser.getUsername());
+        Assertions.assertEquals("Alice", capturedUser.getName());
         Assertions.assertEquals(1996, capturedUser.getBirthYear());
+        Assertions.assertEquals("ABOBA", capturedUser.getUsername());
+        Assertions.assertEquals("definitelySafePassword", capturedUser.getPassword());
     }
 
+    @WithMockUser(authorities = {Constants.ADMIN})
     @Test
     public void testDeleteUser() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/users/1/delete"))
@@ -102,6 +116,7 @@ public class UserControllerTest {
         Assertions.assertEquals(1, capturedId.intValue());
     }
 
+    @WithMockUser(authorities = {Constants.ADMIN})
     @Test
     public void testEditUser() throws Exception {
         var user = User.builder().id(1).username("John").birthYear(1995).build();
@@ -113,9 +128,11 @@ public class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.view().name("users/edit"));
     }
 
+    @WithMockUser(authorities = {Constants.ADMIN})
     @Test
     public void testUpdateUser() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/users/1/update")
+                        .with(csrf())
                         .param("birthYear", "1996")
                         .param("name", "Updated Name"))
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
@@ -125,16 +142,18 @@ public class UserControllerTest {
 
         var capturedUser = userCaptor.getValue();
         Assertions.assertEquals(1, capturedUser.getId());
-        Assertions.assertEquals("Updated Name", capturedUser.getUsername());
+        Assertions.assertEquals("Updated Name", capturedUser.getName());
         Assertions.assertEquals(1996, capturedUser.getBirthYear());
     }
 
+    @WithMockUser(authorities = {Constants.ADMIN})
     @Test
     public void testUpdateUserWithInvalidInput() throws Exception {
         var invalidFieldName = "birthYear";
         var invalidFieldValue = "-32767";
 
         mockMvc.perform(MockMvcRequestBuilders.post("/users/1/update")
+                        .with(csrf())
                         .param("id", "1")
                         .param(invalidFieldName, invalidFieldValue)
                         .param("name", "aboba"))
@@ -145,9 +164,11 @@ public class UserControllerTest {
         Mockito.verify(userService, Mockito.never()).update(Mockito.any());
     }
 
+    @WithMockUser
     @Test
     public void testCreateUserWithInvalidInput() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/users/create")
+                        .with(csrf())
                         .param("name", ""))
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError())
                 .andExpect(MockMvcResultMatchers.model().attributeHasFieldErrors("user", "name"))
