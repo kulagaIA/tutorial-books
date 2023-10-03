@@ -53,6 +53,12 @@ public class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.view().name("users/users"));
     }
 
+    @Test
+    public void testShowUsersWithoutLogin() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/users"))
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+    }
+
     @WithMockUser
     @Test
     public void testShowUser() throws Exception {
@@ -116,6 +122,13 @@ public class UserControllerTest {
         Assertions.assertEquals(1, capturedId.intValue());
     }
 
+    @WithMockUser
+    @Test
+    public void testDeleteUserWithoutAuthority() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/users/1/delete"))
+                .andExpect(MockMvcResultMatchers.status().isForbidden());
+    }
+
     @WithMockUser(authorities = {Constants.ADMIN})
     @Test
     public void testEditUser() throws Exception {
@@ -127,6 +140,14 @@ public class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.model().attribute("user", user))
                 .andExpect(MockMvcResultMatchers.view().name("users/edit"));
     }
+
+    @WithMockUser
+    @Test
+    public void testEditUserWithoutAuthority() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/users/1/edit"))
+                .andExpect(MockMvcResultMatchers.status().isForbidden());
+    }
+
 
     @WithMockUser(authorities = {Constants.ADMIN})
     @Test
@@ -144,6 +165,16 @@ public class UserControllerTest {
         Assertions.assertEquals(1, capturedUser.getId());
         Assertions.assertEquals("Updated Name", capturedUser.getName());
         Assertions.assertEquals(1996, capturedUser.getBirthYear());
+    }
+
+    @WithMockUser
+    @Test
+    public void testUpdateUserWithoutAuthority() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/users/1/update")
+                        .with(csrf())
+                        .param("birthYear", "1996")
+                        .param("name", "Updated Name"))
+                .andExpect(MockMvcResultMatchers.status().isForbidden());
     }
 
     @WithMockUser(authorities = {Constants.ADMIN})

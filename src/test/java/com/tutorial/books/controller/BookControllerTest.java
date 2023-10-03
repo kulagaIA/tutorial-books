@@ -57,6 +57,12 @@ public class BookControllerTest {
                 .andExpect(MockMvcResultMatchers.view().name("books/books"));
     }
 
+    @Test
+    public void testShowBooksWithoutLogin() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/books"))
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+    }
+
     @WithMockUser
     @Test
     public void testShowBook() throws Exception {
