@@ -1,11 +1,11 @@
 package com.tutorial.books.controller;
 
 
+import com.tutorial.books.dto.UserCreate;
 import com.tutorial.books.entity.User;
 import com.tutorial.books.service.BookService;
 import com.tutorial.books.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -32,7 +32,7 @@ public class UserController {
 
     @GetMapping("/users")
     public String showUsers(Model model) {
-        model.addAttribute("users", userService.getAll());
+        model.addAttribute("users",userService.getAll());
         return "users/users";
     }
 
@@ -45,12 +45,12 @@ public class UserController {
 
     @GetMapping("/users/new")
     public String showNewUserPage(Model model) {
-        model.addAttribute("user", new User());
+        model.addAttribute("user", new UserCreate());
         return "users/new";
     }
 
     @PostMapping("/users/create")
-    public String createUser(@ModelAttribute @Valid
+    public String createUser(@ModelAttribute
                              User user,
                              BindingResult bindingResult,
                              Model model,
@@ -59,7 +59,9 @@ public class UserController {
             response.setStatus(HTTP_STATUS_UNPROCESSABLE_CONTENT);
             return "users/new";
         }
+
         userService.create(user);
+
         return "redirect:/users";
     }
 
@@ -81,7 +83,7 @@ public class UserController {
     @PostMapping("/users/{id}/update")
     public String updateUser(@PathVariable("id")
                              Integer id,
-                             @ModelAttribute @Valid
+                             @ModelAttribute
                              User user,
                              BindingResult bindingResult,
                              Model model,
@@ -90,8 +92,10 @@ public class UserController {
             response.setStatus(HTTP_STATUS_UNPROCESSABLE_CONTENT);
             return "users/edit";
         }
+
         user.setId(id);
         userService.update(user);
+
         return "redirect:/users";
     }
 }

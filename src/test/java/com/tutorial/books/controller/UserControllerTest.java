@@ -1,5 +1,6 @@
 package com.tutorial.books.controller;
 
+import com.tutorial.books.dto.UserCreate;
 import com.tutorial.books.entity.Book;
 import com.tutorial.books.entity.User;
 import com.tutorial.books.service.BookService;
@@ -10,9 +11,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mockito;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -24,6 +27,7 @@ import java.util.List;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 @WebMvcTest(UserController.class)
+@Import(ModelMapper.class)
 public class UserControllerTest {
 
     @Autowired
@@ -83,7 +87,7 @@ public class UserControllerTest {
     public void testShowNewUserPage() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/users/new"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.model().attribute("user", new User()))
+                .andExpect(MockMvcResultMatchers.model().attribute("user", new UserCreate()))
                 .andExpect(MockMvcResultMatchers.view().name("users/new"));
     }
 
