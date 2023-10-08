@@ -13,7 +13,7 @@ import static com.tutorial.books.util.Constants.*;
 @Builder
 @EqualsAndHashCode
 @ToString
-public class UserUpdate {
+public class UserCreateDTO {
 
     @NotEmpty(message = USER_NAME_VALIDATION_ERROR)
     private String name;
@@ -23,5 +23,8 @@ public class UserUpdate {
 
     @NotEmpty(message = USER_USERNAME_VALIDATION_ERROR)
     private String username;
+
+    @NotEmpty(message = USER_PASSWORD_VALIDATION_ERROR)
+    private String password;
 
 }

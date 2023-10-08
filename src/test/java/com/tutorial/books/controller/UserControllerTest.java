@@ -1,6 +1,6 @@
 package com.tutorial.books.controller;
 
-import com.tutorial.books.dto.UserCreate;
+import com.tutorial.books.dto.UserCreateDTO;
 import com.tutorial.books.entity.Book;
 import com.tutorial.books.entity.User;
 import com.tutorial.books.service.BookService;
@@ -87,7 +87,7 @@ public class UserControllerTest {
     public void testShowNewUserPage() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/users/new"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.model().attribute("user", new UserCreate()))
+                .andExpect(MockMvcResultMatchers.model().attribute("user", new UserCreateDTO()))
                 .andExpect(MockMvcResultMatchers.view().name("users/new"));
     }
 
@@ -159,7 +159,8 @@ public class UserControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/users/1/update")
                         .with(csrf())
                         .param("birthYear", "1996")
-                        .param("name", "Updated Name"))
+                        .param("name", "Updated Name")
+                        .param("username", "aboba"))
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
                 .andExpect(MockMvcResultMatchers.view().name("redirect:/users"));
 
@@ -193,7 +194,7 @@ public class UserControllerTest {
                         .param(invalidFieldName, invalidFieldValue)
                         .param("name", "aboba"))
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError())
-                .andExpect(MockMvcResultMatchers.model().attributeHasFieldErrors("user", invalidFieldName))
+                .andExpect(MockMvcResultMatchers.model().attributeHasFieldErrors("userUpdateDTO", invalidFieldName))
                 .andExpect(MockMvcResultMatchers.view().name("users/edit"));
 
         Mockito.verify(userService, Mockito.never()).update(Mockito.any());
@@ -206,7 +207,7 @@ public class UserControllerTest {
                         .with(csrf())
                         .param("name", ""))
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError())
-                .andExpect(MockMvcResultMatchers.model().attributeHasFieldErrors("user", "name"))
+                .andExpect(MockMvcResultMatchers.model().attributeHasFieldErrors("userCreateDTO", "name"))
                 .andExpect(MockMvcResultMatchers.view().name("users/new"));
 
         Mockito.verify(userService, Mockito.never()).create(Mockito.any());

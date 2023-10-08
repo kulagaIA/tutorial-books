@@ -1,11 +1,14 @@
 package com.tutorial.books.controller;
 
 
-import com.tutorial.books.dto.UserCreate;
+import com.tutorial.books.dto.UserCreateDTO;
+import com.tutorial.books.dto.UserUpdateDTO;
 import com.tutorial.books.entity.User;
 import com.tutorial.books.service.BookService;
 import com.tutorial.books.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -30,6 +33,9 @@ public class UserController {
     @Autowired
     private BookService bookService;
 
+    @Autowired
+    private ModelMapper mapper;
+
     @GetMapping("/users")
     public String showUsers(Model model) {
         model.addAttribute("users",userService.getAll());
@@ -45,17 +51,19 @@ public class UserController {
 
     @GetMapping("/users/new")
     public String showNewUserPage(Model model) {
-        model.addAttribute("user", new UserCreate());
+        model.addAttribute("user", new UserCreateDTO());
         return "users/new";
     }
 
     @PostMapping("/users/create")
-    public String createUser(@ModelAttribute
-                             User user,
+    public String createUser(@ModelAttribute @Valid
+                             UserCreateDTO userCreateDTO,
                              BindingResult bindingResult,
                              Model model,
                              HttpServletResponse response) {
+        var user = mapper.map(userCreateDTO, User.class);
         if (bindingResult.hasErrors()) {
+            model.addAttribute("user", user);
             response.setStatus(HTTP_STATUS_UNPROCESSABLE_CONTENT);
             return "users/new";
         }
@@ -83,17 +91,20 @@ public class UserController {
     @PostMapping("/users/{id}/update")
     public String updateUser(@PathVariable("id")
                              Integer id,
-                             @ModelAttribute
-                             User user,
+                             @ModelAttribute @Valid
+                             UserUpdateDTO userUpdateDTO,
                              BindingResult bindingResult,
                              Model model,
                              HttpServletResponse response) {
+        var user = mapper.map(userUpdateDTO, User.class);
+        user.setId(id);
+
         if (bindingResult.hasErrors()) {
+            model.addAttribute("user", user);
             response.setStatus(HTTP_STATUS_UNPROCESSABLE_CONTENT);
             return "users/edit";
         }
 
-        user.setId(id);
         userService.update(user);
 
         return "redirect:/users";

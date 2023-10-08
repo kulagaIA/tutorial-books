@@ -13,7 +13,9 @@ import static com.tutorial.books.util.Constants.*;
 @Builder
 @EqualsAndHashCode
 @ToString
-public class UserCreate {
+public class UserUpdateDTO {
+
+    private int id;
 
     @NotEmpty(message = USER_NAME_VALIDATION_ERROR)
     private String name;
@@ -23,8 +25,5 @@ public class UserCreate {
 
     @NotEmpty(message = USER_USERNAME_VALIDATION_ERROR)
     private String username;
-
-    @NotEmpty(message = USER_PASSWORD_VALIDATION_ERROR)
-    private String password;
 
 }
