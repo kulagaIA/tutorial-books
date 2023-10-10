@@ -17,6 +17,10 @@
     <label for="year">Birth year:</label><br>
     <input type="number" id="year" th:field="*{birthYear}">
     <div style="color:red" th:if="${#fields.hasErrors('birthYear')}" th:errors="*{birthYear}">Birth year Error</div>
+    <br>
+    <label for="username">Nickname:</label><br>
+    <input type="text" id="username" th:field="*{username}">
+    <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Nickname Error</div>
     <br><br>
     <input type="submit" value="Submit">
 </form>
