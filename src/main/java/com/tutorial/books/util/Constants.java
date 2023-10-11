@@ -1,5 +1,7 @@
 package com.tutorial.books.util;
 
+import java.util.List;
+
 public class Constants {
 
     public static final String TABLE_NAME_USERS = "users";
@@ -35,4 +37,6 @@ public class Constants {
     public static final String LIBRARIAN = "ROLE_librarian";
     public static final String USER = "ROLE_user";
     public static final String VIEWER = "ROLE_viewer";
+
+    public static final List<String> ALL_CONFIRMATION_TYPES = List.of("console", "mail");
 }

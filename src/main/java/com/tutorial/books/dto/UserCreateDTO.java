@@ -4,6 +4,8 @@ import com.tutorial.books.util.validation.BirthYear;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
+import java.util.List;
+
 import static com.tutorial.books.util.Constants.*;
 
 @Getter
@@ -26,5 +28,7 @@ public class UserCreateDTO {
 
     @NotEmpty(message = USER_PASSWORD_VALIDATION_ERROR)
     private String password;
+
+    private List<String> confirmationTypes;
 
 }

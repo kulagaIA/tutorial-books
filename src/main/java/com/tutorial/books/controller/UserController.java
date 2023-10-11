@@ -8,6 +8,7 @@ import com.tutorial.books.service.BookService;
 import com.tutorial.books.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,11 +21,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import static com.tutorial.books.util.Constants.ADMIN;
-import static com.tutorial.books.util.Constants.HTTP_STATUS_UNPROCESSABLE_CONTENT;
+import static com.tutorial.books.util.Constants.*;
 
 @Controller
 @EnableMethodSecurity
+@Slf4j
 public class UserController {
 
     @Autowired
@@ -38,7 +39,7 @@ public class UserController {
 
     @GetMapping("/users")
     public String showUsers(Model model) {
-        model.addAttribute("users",userService.getAll());
+        model.addAttribute("users", userService.getAll());
         return "users/users";
     }
 
@@ -52,6 +53,7 @@ public class UserController {
     @GetMapping("/users/new")
     public String showNewUserPage(Model model) {
         model.addAttribute("user", new UserCreateDTO());
+        model.addAttribute("allConfirmationTypes", ALL_CONFIRMATION_TYPES);
         return "users/new";
     }
 
@@ -61,14 +63,15 @@ public class UserController {
                              BindingResult bindingResult,
                              Model model,
                              HttpServletResponse response) {
-        var user = mapper.map(userCreateDTO, User.class);
         if (bindingResult.hasErrors()) {
-            model.addAttribute("user", user);
+            System.out.println(bindingResult.getAllErrors());
+            model.addAttribute("user", userCreateDTO);
+            model.addAttribute("allConfirmationTypes", ALL_CONFIRMATION_TYPES);
             response.setStatus(HTTP_STATUS_UNPROCESSABLE_CONTENT);
             return "users/new";
         }
 
-        userService.create(user);
+        userService.create(mapper.map(userCreateDTO, User.class));
 
         return "redirect:/users";
     }

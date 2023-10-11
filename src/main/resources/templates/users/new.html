@@ -11,14 +11,68 @@
 <span><a th:href="${'/users'}">back to users list</a></span>
 <form action="/users/create" th:action="@{/users/create}" th:object="${user}" method="post">
     <label for="name">Name:</label><br>
-    <input type="text" id="name" name="name" th:field="*{name}" placeholder="John Brown">
+    <input type="text" id="name" name="name" th:field="*{name}" placeholder="John Brown" required>
     <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
     <br>
     <label for="year">Birth year:</label><br>
-    <input type="number" id="year" name="year" th:field="*{birthYear}" placeholder="1991">
+    <input type="number" id="year" name="year" th:field="*{birthYear}" placeholder="1991" required>
     <div style="color:red" th:if="${#fields.hasErrors('birthYear')}" th:errors="*{birthYear}">Birth year Error</div>
+    <br>
+    <label for="username">Nickname:</label><br>
+    <input type="text" id="username" th:field="*{username}" placeholder="xxXCL1T0R_MAST3R_666Xxx" required>
+    <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Nickname Error</div>
+    <br>
+    <label for="password">Password:</label><br>
+    <input type="password" id="password" th:field="*{password}" placeholder="correct horse battery staple" required>
+    <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>
+    <br>
+    <input type="password" id="confirm_password" placeholder="correct horse battery staple" required
+           onkeyup="confirm_password()">
+    <span id="confirmation_pass_alert"></span>
+    <br>
+    <label for="confirmation_types">How to confirm registration?</label><br>
+    <ul id="confirmation_types">
+        <li th:each="checkboxValue: ${allConfirmationTypes}">
+            <input type="checkbox"
+                   th:field="*{confirmationTypes}"
+                   th:value="${checkboxValue}"/>
+            <label
+                    th:for="${#ids.prev('confirmationTypes')}"
+                    th:text="${checkboxValue}"></label>
+        </li>
+    </ul>
     <br><br>
-    <input type="submit" value="Submit">
+    <input id="submit" type="submit" value="Submit" onclick="confirm_pass_alert()">
 </form>
+<script>
+        function confirm_password() {
+
+            var pass = document.getElementById('password').value;
+            var confirm_pass = document.getElementById('confirm_password').value;
+            if (pass != confirm_pass) {
+                document.getElementById('confirmation_pass_alert').style.color = 'red';
+                document.getElementById('confirmation_pass_alert').innerHTML
+                    = 'Use same password';
+                document.getElementById('submit').disabled = true;
+                document.getElementById('submit').style.opacity = (0.4);
+            } else {
+                document.getElementById('confirmation_pass_alert').style.color = 'green';
+                document.getElementById('confirmation_pass_alert').innerHTML =
+                    'Password Matched';
+                document.getElementById('submit').disabled = false;
+                document.getElementById('submit').style.opacity = (1);
+            }
+        }
+
+        function confirm_pass_alert() {
+            if (document.getElementById('password').value != "" &&
+                document.getElementById('confirm_password').value != "") {
+                alert("Your response is submitted");
+            } else {
+                alert("Please fill all the fields");
+            }
+        }
+
+</script>
 </body>
 </html>
