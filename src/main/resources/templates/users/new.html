@@ -9,7 +9,7 @@
 <body>
 <p>ADD NEW USER</p>
 <span><a th:href="${'/users'}">back to users list</a></span>
-<form action="/users/create" th:action="@{/users/create}" th:object="${user}" method="post">
+<form action="/users/create" th:action="@{/users/create}" th:object="${userCreateDTO}" method="post">
     <label for="name">Name:</label><br>
     <input type="text" id="name" name="name" th:field="*{name}" placeholder="John Brown" required>
     <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
@@ -27,7 +27,7 @@
     <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>
     <br>
     <input type="password" id="confirm_password" placeholder="correct horse battery staple" required
-           onkeyup="confirm_password()">
+           onkeyup="validate_password()">
     <span id="confirmation_pass_alert"></span>
     <br>
     <label for="confirmation_types">How to confirm registration?</label><br>
@@ -42,11 +42,10 @@
         </li>
     </ul>
     <br><br>
-    <input id="submit" type="submit" value="Submit" onclick="confirm_pass_alert()">
+    <input id="submit" type="submit" value="Submit">
 </form>
 <script>
-        function confirm_password() {
-
+        function validate_password() {
             var pass = document.getElementById('password').value;
             var confirm_pass = document.getElementById('confirm_password').value;
             if (pass != confirm_pass) {
@@ -61,15 +60,6 @@
                     'Password Matched';
                 document.getElementById('submit').disabled = false;
                 document.getElementById('submit').style.opacity = (1);
-            }
-        }
-
-        function confirm_pass_alert() {
-            if (document.getElementById('password').value != "" &&
-                document.getElementById('confirm_password').value != "") {
-                alert("Your response is submitted");
-            } else {
-                alert("Please fill all the fields");
             }
         }
 

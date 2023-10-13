@@ -1,6 +1,8 @@
 package com.tutorial.books.dto;
 
-import com.tutorial.books.util.validation.BirthYear;
+import com.tutorial.books.util.validation.user.BirthYearValidation;
+import com.tutorial.books.util.validation.user.PasswordValidation;
+import com.tutorial.books.util.validation.user.UsernameValidation;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
@@ -20,13 +22,13 @@ public class UserCreateDTO {
     @NotEmpty(message = USER_NAME_VALIDATION_ERROR)
     private String name;
 
-    @BirthYear(message = USER_BIRTH_YEAR_VALIDATION_ERROR)
+    @BirthYearValidation(message = USER_BIRTH_YEAR_VALIDATION_ERROR)
     private int birthYear;
 
-    @NotEmpty(message = USER_USERNAME_VALIDATION_ERROR)
+    @UsernameValidation(message = USER_USERNAME_VALIDATION_ERROR)
     private String username;
 
-    @NotEmpty(message = USER_PASSWORD_VALIDATION_ERROR)
+    @PasswordValidation(message = USER_PASSWORD_VALIDATION_ERROR)
     private String password;
 
     private List<String> confirmationTypes;

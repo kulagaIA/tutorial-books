@@ -1,5 +1,6 @@
 package com.tutorial.books.util.validation;
 
+import com.tutorial.books.util.validation.user.BirthYearValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -12,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ActiveProfiles("junit")
-public class BirthYearValidatorTest {
+public class BirthYearValidationValidatorTest {
 
     private final BirthYearValidator birthYearValidator = new BirthYearValidator();
 

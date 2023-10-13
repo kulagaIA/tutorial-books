@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
@@ -25,6 +27,8 @@ public class UserServiceImplTest {
 
     @MockBean
     private UserRepository userRepositoryMock;
+
+    private final PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
     @Test
     void testGetAll() {
@@ -81,13 +85,14 @@ public class UserServiceImplTest {
 
     @Test
     void testCreate() {
-        var user = User.builder().username("aboba").birthYear(32767).build();
+        var user = User.builder().username("aboba").birthYear(32767).password("aboba").build();
 
         when(userRepositoryMock.create(user)).thenReturn(user);
         user.setId(new Random().nextInt());
 
         var result = userService.create(user);
 
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         assertEquals(user, result);
     }
 

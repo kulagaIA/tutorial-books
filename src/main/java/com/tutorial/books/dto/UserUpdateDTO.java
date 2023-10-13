@@ -1,6 +1,6 @@
 package com.tutorial.books.dto;
 
-import com.tutorial.books.util.validation.BirthYear;
+import com.tutorial.books.util.validation.user.BirthYearValidation;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
@@ -20,7 +20,7 @@ public class UserUpdateDTO {
     @NotEmpty(message = USER_NAME_VALIDATION_ERROR)
     private String name;
 
-    @BirthYear(message = USER_BIRTH_YEAR_VALIDATION_ERROR)
+    @BirthYearValidation(message = USER_BIRTH_YEAR_VALIDATION_ERROR)
     private int birthYear;
 
     @NotEmpty(message = USER_USERNAME_VALIDATION_ERROR)

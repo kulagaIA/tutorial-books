@@ -52,7 +52,7 @@ public class UserController {
 
     @GetMapping("/users/new")
     public String showNewUserPage(Model model) {
-        model.addAttribute("user", new UserCreateDTO());
+        model.addAttribute("userCreateDTO", new UserCreateDTO());
         model.addAttribute("allConfirmationTypes", ALL_CONFIRMATION_TYPES);
         return "users/new";
     }
@@ -65,7 +65,6 @@ public class UserController {
                              HttpServletResponse response) {
         if (bindingResult.hasErrors()) {
             System.out.println(bindingResult.getAllErrors());
-            model.addAttribute("user", userCreateDTO);
             model.addAttribute("allConfirmationTypes", ALL_CONFIRMATION_TYPES);
             response.setStatus(HTTP_STATUS_UNPROCESSABLE_CONTENT);
             return "users/new";

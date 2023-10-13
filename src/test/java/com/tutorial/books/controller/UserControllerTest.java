@@ -3,6 +3,7 @@ package com.tutorial.books.controller;
 import com.tutorial.books.dto.UserCreateDTO;
 import com.tutorial.books.entity.Book;
 import com.tutorial.books.entity.User;
+import com.tutorial.books.repository.impl.UserJpaRepository;
 import com.tutorial.books.service.BookService;
 import com.tutorial.books.service.UserService;
 import com.tutorial.books.util.Constants;
@@ -38,6 +39,9 @@ public class UserControllerTest {
 
     @MockBean
     private BookService bookService;
+
+    @MockBean
+    private UserJpaRepository userJpaRepository;
 
     @Captor
     ArgumentCaptor<User> userCaptor;
@@ -87,7 +91,7 @@ public class UserControllerTest {
     public void testShowNewUserPage() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/users/new"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.model().attribute("user", new UserCreateDTO()))
+                .andExpect(MockMvcResultMatchers.model().attribute("userCreateDTO", new UserCreateDTO()))
                 .andExpect(MockMvcResultMatchers.view().name("users/new"));
     }
 
