@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Users</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<h1>ERROR OCCURRED!</h1>
+<br>
+<h2>HTTP status: </h2>
+<div th:text="${error.status}">error description</div>
+<br>
+<div th:if="${error.stacktrace != null && error.stacktrace != ''}">
+    <h2>Stacktrace: </h2>
+    <div th:text="${error.stacktrace}">stacktrace</div>
+</div>
+<br>
+<a href="/">Return to main page</a>
+</body>
+</html>
