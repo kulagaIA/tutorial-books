@@ -43,6 +43,7 @@ public class UserController {
         return "users/users";
     }
 
+    @PreAuthorize("#id == principal.id")
     @GetMapping("/users/{id}")
     public String showUser(Model model, @PathVariable("id") Integer id) {
         model.addAttribute("user", userService.getById(id));

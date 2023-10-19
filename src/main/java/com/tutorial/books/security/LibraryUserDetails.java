@@ -13,6 +13,8 @@ import java.util.Collection;
 @Setter
 public class LibraryUserDetails implements UserDetails {
 
+    private int id;
+
     private String username;
 
     private String password;
@@ -34,6 +36,7 @@ public class LibraryUserDetails implements UserDetails {
 
     public static UserDetails buildFromUser(User user) {
         var libraryUserDetails = new LibraryUserDetails();
+        libraryUserDetails.setId(user.getId());
         libraryUserDetails.setUsername(user.getUsername());
         libraryUserDetails.setPassword(user.getPassword());
         libraryUserDetails.setAuthorities(user.getRoles().stream()
