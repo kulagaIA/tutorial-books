@@ -19,4 +19,6 @@ public interface UserService {
     void update(User user);
 
     List<User> getWithoutBookByBookId(Integer bookId);
+
+    List<User> getAllThatCurrentUserCanView();
 }

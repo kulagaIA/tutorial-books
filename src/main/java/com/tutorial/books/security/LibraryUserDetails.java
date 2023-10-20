@@ -1,5 +1,6 @@
 package com.tutorial.books.security;
 
+import com.tutorial.books.entity.Role;
 import com.tutorial.books.entity.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,6 +48,11 @@ public class LibraryUserDetails implements UserDetails {
         libraryUserDetails.setCredentialsNonExpired(true);
         libraryUserDetails.setEnabled(true);
         return libraryUserDetails;
+    }
+
+    public boolean isAdmin() {
+        return this.authorities.stream().anyMatch(
+                authority -> Role.Name.ROLE_admin.label.equals(authority.getAuthority()));
     }
 
 }

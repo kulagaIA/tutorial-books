@@ -1,12 +1,13 @@
 package com.tutorial.books.controller;
 
+import com.tutorial.books.controller.security.WithMockLibraryUser;
 import com.tutorial.books.dto.UserCreateDTO;
 import com.tutorial.books.entity.Book;
+import com.tutorial.books.entity.Role;
 import com.tutorial.books.entity.User;
 import com.tutorial.books.repository.impl.UserJpaRepository;
 import com.tutorial.books.service.BookService;
 import com.tutorial.books.service.UserService;
-import com.tutorial.books.util.Constants;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -17,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -29,6 +30,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 
 @WebMvcTest(UserController.class)
 @Import(ModelMapper.class)
+@WithMockLibraryUser(roles = {Role.Name.ROLE_admin})
 public class UserControllerTest {
 
     @Autowired
@@ -46,14 +48,13 @@ public class UserControllerTest {
     @Captor
     ArgumentCaptor<User> userCaptor;
 
-    @WithMockUser
     @Test
     public void testShowUsers() throws Exception {
         var users = new ArrayList<User>();
         users.add(User.builder().id(1).username("John").birthYear(1995).build());
         users.add(User.builder().id(2).username("Alice").birthYear(1994).build());
 
-        Mockito.when(userService.getAll()).thenReturn(users);
+        Mockito.when(userService.getAllThatCurrentUserCanView()).thenReturn(users);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/users"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -62,12 +63,12 @@ public class UserControllerTest {
     }
 
     @Test
+    @WithAnonymousUser
     public void testShowUsersWithoutLogin() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/users"))
                 .andExpect(MockMvcResultMatchers.status().isUnauthorized());
     }
 
-    @WithMockUser
     @Test
     public void testShowUser() throws Exception {
         var userId = 1;
@@ -86,7 +87,6 @@ public class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.view().name("users/user"));
     }
 
-    @WithMockUser
     @Test
     public void testShowNewUserPage() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/users/new"))
@@ -95,7 +95,6 @@ public class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.view().name("users/new"));
     }
 
-    @WithMockUser
     @Test
     public void testCreateUser() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/users/create")
@@ -116,7 +115,6 @@ public class UserControllerTest {
         Assertions.assertEquals("definitelySafePassword", capturedUser.getPassword());
     }
 
-    @WithMockUser(authorities = {Constants.ADMIN})
     @Test
     public void testDeleteUser() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/users/1/delete"))
@@ -130,14 +128,13 @@ public class UserControllerTest {
         Assertions.assertEquals(1, capturedId.intValue());
     }
 
-    @WithMockUser
     @Test
+    @WithMockLibraryUser(id = 2)
     public void testDeleteUserWithoutAuthority() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/users/1/delete"))
                 .andExpect(MockMvcResultMatchers.status().isForbidden());
     }
 
-    @WithMockUser(authorities = {Constants.ADMIN})
     @Test
     public void testEditUser() throws Exception {
         var user = User.builder().id(1).username("John").birthYear(1995).build();
@@ -149,15 +146,26 @@ public class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.view().name("users/edit"));
     }
 
-    @WithMockUser
     @Test
+    @WithMockLibraryUser(roles = Role.Name.ROLE_user)
+    public void testEditUserByOwningUserThatIsNotAdmin() throws Exception {
+        var user = User.builder().id(1).username("John").birthYear(1995).build();
+        Mockito.when(userService.getById(1)).thenReturn(user);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/users/1/edit"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.model().attribute("user", user))
+                .andExpect(MockMvcResultMatchers.view().name("users/edit"));
+    }
+
+    @Test
+    @WithMockLibraryUser(id = 2, roles = Role.Name.ROLE_user)
     public void testEditUserWithoutAuthority() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/users/1/edit"))
                 .andExpect(MockMvcResultMatchers.status().isForbidden());
     }
 
 
-    @WithMockUser(authorities = {Constants.ADMIN})
     @Test
     public void testUpdateUser() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/users/1/update")
@@ -176,8 +184,8 @@ public class UserControllerTest {
         Assertions.assertEquals(1996, capturedUser.getBirthYear());
     }
 
-    @WithMockUser
     @Test
+    @WithMockLibraryUser(id = 2)
     public void testUpdateUserWithoutAuthority() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/users/1/update")
                         .with(csrf())
@@ -186,7 +194,6 @@ public class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isForbidden());
     }
 
-    @WithMockUser(authorities = {Constants.ADMIN})
     @Test
     public void testUpdateUserWithInvalidInput() throws Exception {
         var invalidFieldName = "birthYear";
@@ -204,7 +211,6 @@ public class UserControllerTest {
         Mockito.verify(userService, Mockito.never()).update(Mockito.any());
     }
 
-    @WithMockUser
     @Test
     public void testCreateUserWithInvalidInput() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/users/create")

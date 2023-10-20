@@ -6,12 +6,13 @@ import com.tutorial.books.dto.UserUpdateDTO;
 import com.tutorial.books.entity.User;
 import com.tutorial.books.service.BookService;
 import com.tutorial.books.service.UserService;
+import com.tutorial.books.util.security.annotations.AllowAdmin;
+import com.tutorial.books.util.security.annotations.AllowOwningUserOrAdmin;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +22,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import static com.tutorial.books.util.Constants.*;
+import static com.tutorial.books.util.Constants.ALL_CONFIRMATION_TYPES;
+import static com.tutorial.books.util.Constants.HTTP_STATUS_UNPROCESSABLE_CONTENT;
 
 @Controller
 @EnableMethodSecurity
@@ -39,11 +41,11 @@ public class UserController {
 
     @GetMapping("/users")
     public String showUsers(Model model) {
-        model.addAttribute("users", userService.getAll());
+        model.addAttribute("users", userService.getAllThatCurrentUserCanView());
         return "users/users";
     }
 
-    @PreAuthorize("#id == principal.id")
+    @AllowOwningUserOrAdmin
     @GetMapping("/users/{id}")
     public String showUser(Model model, @PathVariable("id") Integer id) {
         model.addAttribute("user", userService.getById(id));
@@ -51,6 +53,7 @@ public class UserController {
         return "users/user";
     }
 
+    @AllowAdmin
     @GetMapping("/users/new")
     public String showNewUserPage(Model model) {
         model.addAttribute("userCreateDTO", new UserCreateDTO());
@@ -58,6 +61,7 @@ public class UserController {
         return "users/new";
     }
 
+    @AllowAdmin
     @PostMapping("/users/create")
     public String createUser(@ModelAttribute @Valid
                              UserCreateDTO userCreateDTO,
@@ -76,21 +80,21 @@ public class UserController {
         return "redirect:/users";
     }
 
-    @PreAuthorize("hasRole('" + ADMIN + "')")
+    @AllowOwningUserOrAdmin
     @GetMapping("/users/{id}/delete")
     public String deleteUser(Model model, @PathVariable("id") Integer id) {
         userService.delete(id);
         return "redirect:/users";
     }
 
-    @PreAuthorize("hasRole('" + ADMIN + "')")
+    @AllowOwningUserOrAdmin
     @GetMapping("/users/{id}/edit")
     public String editUser(Model model, @PathVariable("id") Integer id) {
         model.addAttribute("user", userService.getById(id));
         return "users/edit";
     }
 
-    @PreAuthorize("hasRole('" + ADMIN + "')")
+    @AllowOwningUserOrAdmin
     @PostMapping("/users/{id}/update")
     public String updateUser(@PathVariable("id")
                              Integer id,

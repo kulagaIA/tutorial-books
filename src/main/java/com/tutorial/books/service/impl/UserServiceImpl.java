@@ -2,8 +2,10 @@ package com.tutorial.books.service.impl;
 
 import com.tutorial.books.entity.User;
 import com.tutorial.books.repository.UserRepository;
+import com.tutorial.books.security.LibraryUserDetails;
 import com.tutorial.books.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -52,5 +54,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getWithoutBookByBookId(Integer bookId) {
         return userRepository.getWithoutBookByBookId(bookId);
+    }
+
+    @Override
+    public List<User> getAllThatCurrentUserCanView() {
+        var currentUser = (LibraryUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (currentUser.isAdmin())
+            return userRepository.getAll();
+
+        return List.of(userRepository.getById(currentUser.getId()).orElseThrow());
     }
 }
