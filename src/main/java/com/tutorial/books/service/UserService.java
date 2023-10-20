@@ -20,5 +20,5 @@ public interface UserService {
 
     List<User> getWithoutBookByBookId(Integer bookId);
 
-    List<User> getAllThatCurrentUserCanView();
+    List<User> getAllThatCurrentUserIsAllowedToView();
 }

@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllThatCurrentUserCanView() {
+    public List<User> getAllThatCurrentUserIsAllowedToView() {
         var currentUser = (LibraryUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (currentUser.isAdmin())

@@ -41,7 +41,7 @@ public class UserController {
 
     @GetMapping("/users")
     public String showUsers(Model model) {
-        model.addAttribute("users", userService.getAllThatCurrentUserCanView());
+        model.addAttribute("users", userService.getAllThatCurrentUserIsAllowedToView());
         return "users/users";
     }
 

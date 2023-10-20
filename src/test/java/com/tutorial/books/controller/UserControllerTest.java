@@ -54,7 +54,7 @@ public class UserControllerTest {
         users.add(User.builder().id(1).username("John").birthYear(1995).build());
         users.add(User.builder().id(2).username("Alice").birthYear(1994).build());
 
-        Mockito.when(userService.getAllThatCurrentUserCanView()).thenReturn(users);
+        Mockito.when(userService.getAllThatCurrentUserIsAllowedToView()).thenReturn(users);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/users"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
