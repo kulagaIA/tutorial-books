@@ -31,4 +31,5 @@
     <include file="changelog-1.19_create_table_users_roles.xml" relativeToChangelogFile="true"/>
     <include file="changelog-1.20_fill_table_roles.xml" relativeToChangelogFile="true"/>
     <include file="changelog-1.21_fill_table_users_roles.xml" relativeToChangelogFile="true"/>
+    <include file="org.springframework.session.schema-postgresql.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>
