@@ -19,6 +19,10 @@ public class WebSecurityConfig {
                         .requestMatchers("/error").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(withDefaults())
+                .sessionManagement(sessionManagement -> sessionManagement.sessionConcurrency(
+                        sessionConcurrency -> sessionConcurrency
+                        .maximumSessions(1)
+                        .expiredUrl("/login")))
                 .build();
     }
 

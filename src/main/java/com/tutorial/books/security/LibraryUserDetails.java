@@ -2,6 +2,7 @@ package com.tutorial.books.security;
 
 import com.tutorial.books.entity.Role;
 import com.tutorial.books.entity.User;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,6 +13,7 @@ import java.util.Collection;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 public class LibraryUserDetails implements UserDetails {
 
     private int id;

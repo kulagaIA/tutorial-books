@@ -6,6 +6,8 @@ spring:
     password: digital_library_user
   session:
     store-type: jdbc
+    jdbc:
+      initialize-schema: never
   liquibase:
     enabled: true
     changeLog: classpath:db/changelog/changelog.xml

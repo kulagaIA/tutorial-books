@@ -4,6 +4,10 @@ spring:
     driverClassName: org.h2.Driver
     username: sa
     password: password
+  session:
+    store-type: jdbc
+    jdbc:
+      initialize-schema: never
   liquibase:
     enabled: true
     changeLog: classpath:db/changelog/changelog.xml
